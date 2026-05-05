@@ -103,6 +103,57 @@
       margin-bottom: 26px;
     }
 
+    .loginBox {
+      width: min(760px, 94vw);
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 30px;
+      padding: 34px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.36);
+      backdrop-filter: blur(16px);
+    }
+
+    .loginTitle {
+      text-align: center;
+      font-size: clamp(34px, 6vw, 58px);
+      font-weight: 1000;
+      margin-bottom: 10px;
+    }
+
+    .loginPanel {
+      background: rgba(15,23,42,.72);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 24px;
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .loginRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .loginRow input {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .nickMsg {
+      margin-top: 10px;
+      font-weight: 900;
+      min-height: 24px;
+    }
+
+    .ok {
+      color: #86efac;
+    }
+
+    .no {
+      color: #fca5a5;
+    }
+
     .profileBox {
       background: rgba(15, 23, 42, .68);
       border: 1px solid rgba(255,255,255,.12);
@@ -132,6 +183,16 @@
       border-radius: 18px;
       padding: 15px;
       text-align: center;
+    }
+
+    .stat.clickable {
+      cursor: pointer;
+      transition: .16s;
+    }
+
+    .stat.clickable:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.13);
     }
 
     .stat .label {
@@ -325,6 +386,11 @@
       color: white;
     }
 
+    .stateHiddenMode .element {
+      background: linear-gradient(135deg, #64748b, #334155) !important;
+      color: white !important;
+    }
+
     .elNumber {
       font-size: 12px;
       font-weight: 900;
@@ -478,14 +544,6 @@
       font-weight: 900;
     }
 
-    .ok {
-      color: #86efac;
-    }
-
-    .no {
-      color: #fca5a5;
-    }
-
     .resultPanel {
       display: none;
       width: min(760px, 94vw);
@@ -505,6 +563,66 @@
       font-size: 48px;
       font-weight: 1000;
       margin: 12px 0;
+    }
+
+    .modalBack {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,.64);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modalBack.active {
+      display: flex;
+    }
+
+    .modal {
+      width: min(900px, 96vw);
+      max-height: 86vh;
+      overflow: auto;
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.6);
+    }
+
+    .gradeList {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .gradeRow {
+      display: grid;
+      grid-template-columns: 70px 1fr 120px;
+      gap: 8px;
+      align-items: center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .gradeRow.current {
+      background: linear-gradient(135deg, rgba(56,189,248,.32), rgba(167,139,250,.3));
+      border-color: rgba(125,211,252,.8);
+    }
+
+    .gradeSymbol {
+      font-size: 25px;
+      font-weight: 1000;
+      text-align: center;
+    }
+
+    .gradeNeed {
+      text-align: right;
+      color: #cbd5e1;
+      font-weight: 900;
     }
 
     @media (max-width: 760px) {
@@ -532,41 +650,77 @@
       .elSymbol {
         font-size: 21px;
       }
+
+      .gradeRow {
+        grid-template-columns: 55px 1fr;
+      }
+
+      .gradeNeed {
+        grid-column: 1 / 3;
+        text-align: left;
+      }
     }
   </style>
 </head>
 <body>
 
-<section id="homeScreen" class="screen active">
+<section id="loginScreen" class="screen active">
+  <div class="centerWrap">
+    <div class="loginBox">
+      <div class="loginTitle">원소 외우기</div>
+      <p class="sub">
+        닉네임마다 점수와 등급이 따로 저장됩니다.<br>
+        이 브라우저/기기 안에서만 저장됩니다.
+      </p>
+
+      <div class="loginPanel">
+        <h2>새로 시작하기</h2>
+        <div class="loginRow">
+          <input id="newNickInput" placeholder="새 닉네임 입력" oninput="checkNewNick()" />
+          <button onclick="startNewNickname()">시작</button>
+        </div>
+        <div id="newNickMsg" class="nickMsg">입력하면 사용 가능한 닉네임인지 표시됩니다.</div>
+      </div>
+
+      <div class="loginPanel">
+        <h2>이미 사용중이신 닉네임이 있나요?</h2>
+        <div class="loginRow">
+          <input id="oldNickInput" placeholder="기존 닉네임 입력" />
+          <button onclick="enterOldNickname()">들어가기</button>
+        </div>
+        <div class="nickMsg">기존 닉네임이 맞으면 저장된 점수와 등급으로 들어갑니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="homeScreen" class="screen">
   <div class="centerWrap">
     <div class="card">
       <h1>원소 외우기</h1>
       <p class="sub">
-        주기율표를 보며 외우고, 원소 이름·기호·번호·원자량·질량수·상태 퀴즈를 풀 수 있습니다.<br>
-        닉네임마다 점수와 등급이 따로 저장됩니다.
+        주기율표를 보며 외우고, 원하는 항목을 골라 퀴즈를 풀 수 있습니다.
       </p>
 
       <div class="profileBox">
         <div class="profileRow">
-          <input id="nicknameInput" placeholder="닉네임 입력" />
-          <button onclick="loginNickname()">닉네임 시작</button>
-          <select id="profileSelect" onchange="switchProfileFromSelect()"></select>
-          <button class="secondary" onclick="deleteCurrentProfile()">현재 닉네임 삭제</button>
+          <span class="pill" id="homeNickPill">닉네임 없음</span>
+          <button class="secondary" onclick="logout()">로그아웃</button>
+          <button class="danger" onclick="deleteCurrentProfile()">닉네임 초기화</button>
         </div>
 
         <div class="profileInfo">
           <div class="stat">
-            <div class="label">현재 닉네임</div>
-            <div class="value" id="currentNickText">없음</div>
-          </div>
-          <div class="stat">
             <div class="label">총 점수</div>
             <div class="value" id="totalScoreText">0점</div>
           </div>
-          <div class="stat">
+
+          <div class="stat clickable" onclick="openGradeModal()">
             <div class="label">현재 등급</div>
             <div class="value" id="gradeText">수소</div>
+            <div style="font-size:13px; color:#cbd5e1; margin-top:6px;">눌러서 전체 등급 보기</div>
           </div>
+
           <div class="stat">
             <div class="label">다음 등급까지</div>
             <div class="value" id="nextGradeText">10점</div>
@@ -602,7 +756,7 @@
     <button class="toggleBtn active" data-field="name">원소 이름</button>
     <button class="toggleBtn active" data-field="atomicWeight">원자량</button>
     <button class="toggleBtn active" data-field="massNumber">질량수</button>
-    <button class="toggleBtn active" data-field="state">상태</button>
+    <button class="toggleBtn active" data-field="state">상태/색상</button>
 
     <span class="pill">확대/축소</span>
     <input id="zoomRange" type="range" min="50" max="180" value="100" oninput="setZoom(this.value)" />
@@ -694,134 +848,152 @@
   </div>
 </section>
 
+<div id="gradeModalBack" class="modalBack" onclick="closeGradeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+      <h2>전체 등급표</h2>
+      <button class="secondary" onclick="closeGradeModal()">닫기</button>
+    </div>
+    <p style="color:#cbd5e1; line-height:1.6;">
+      등급은 수소부터 시작해서 오가네손까지 올라갑니다. 현재 등급은 파란색으로 표시됩니다.
+    </p>
+    <div id="gradeList" class="gradeList"></div>
+  </div>
+</div>
+
 <script>
-const elements = [
-  {n:1,s:"H",name:"수소",aw:"1.008",m:"1",state:"기체",p:1,g:1},
-  {n:2,s:"He",name:"헬륨",aw:"4.0026",m:"4",state:"기체",p:1,g:18},
+const rawElements = `1|H|수소|1.008|1|기체|1|1
+2|He|헬륨|4.0026|4|기체|1|18
+3|Li|리튬|6.94|7|금속|2|1
+4|Be|베릴륨|9.0122|9|금속|2|2
+5|B|붕소|10.81|11|금속|2|13
+6|C|탄소|12.011|12|금속|2|14
+7|N|질소|14.007|14|기체|2|15
+8|O|산소|15.999|16|기체|2|16
+9|F|플루오린|18.998|19|기체|2|17
+10|Ne|네온|20.180|20|기체|2|18
+11|Na|나트륨|22.990|23|금속|3|1
+12|Mg|마그네슘|24.305|24|금속|3|2
+13|Al|알루미늄|26.982|27|금속|3|13
+14|Si|규소|28.085|28|금속|3|14
+15|P|인|30.974|31|금속|3|15
+16|S|황|32.06|32|금속|3|16
+17|Cl|염소|35.45|35|기체|3|17
+18|Ar|아르곤|39.948|40|기체|3|18
+19|K|칼륨|39.098|39|금속|4|1
+20|Ca|칼슘|40.078|40|금속|4|2
+21|Sc|스칸듐|44.956|45|금속|4|3
+22|Ti|타이타늄|47.867|48|금속|4|4
+23|V|바나듐|50.942|51|금속|4|5
+24|Cr|크로뮴|51.996|52|금속|4|6
+25|Mn|망가니즈|54.938|55|금속|4|7
+26|Fe|철|55.845|56|금속|4|8
+27|Co|코발트|58.933|59|금속|4|9
+28|Ni|니켈|58.693|59|금속|4|10
+29|Cu|구리|63.546|64|금속|4|11
+30|Zn|아연|65.38|65|금속|4|12
+31|Ga|갈륨|69.723|70|금속|4|13
+32|Ge|저마늄|72.630|73|금속|4|14
+33|As|비소|74.922|75|금속|4|15
+34|Se|셀레늄|78.971|79|금속|4|16
+35|Br|브로민|79.904|80|액체|4|17
+36|Kr|크립톤|83.798|84|기체|4|18
+37|Rb|루비듐|85.468|85|금속|5|1
+38|Sr|스트론튬|87.62|88|금속|5|2
+39|Y|이트륨|88.906|89|금속|5|3
+40|Zr|지르코늄|91.224|91|금속|5|4
+41|Nb|나이오븀|92.906|93|금속|5|5
+42|Mo|몰리브데넘|95.95|96|금속|5|6
+43|Tc|테크네튬|98|98|금속|5|7
+44|Ru|루테늄|101.07|101|금속|5|8
+45|Rh|로듐|102.91|103|금속|5|9
+46|Pd|팔라듐|106.42|106|금속|5|10
+47|Ag|은|107.87|108|금속|5|11
+48|Cd|카드뮴|112.41|112|금속|5|12
+49|In|인듐|114.82|115|금속|5|13
+50|Sn|주석|118.71|119|금속|5|14
+51|Sb|안티모니|121.76|122|금속|5|15
+52|Te|텔루륨|127.60|128|금속|5|16
+53|I|아이오딘|126.90|127|금속|5|17
+54|Xe|제논|131.29|131|기체|5|18
+55|Cs|세슘|132.91|133|금속|6|1
+56|Ba|바륨|137.33|137|금속|6|2
+57|La|란타넘|138.91|139|금속|8|4
+58|Ce|세륨|140.12|140|금속|8|5
+59|Pr|프라세오디뮴|140.91|141|금속|8|6
+60|Nd|네오디뮴|144.24|144|금속|8|7
+61|Pm|프로메튬|145|145|금속|8|8
+62|Sm|사마륨|150.36|150|금속|8|9
+63|Eu|유로퓸|151.96|152|금속|8|10
+64|Gd|가돌리늄|157.25|157|금속|8|11
+65|Tb|터븀|158.93|159|금속|8|12
+66|Dy|디스프로슘|162.50|163|금속|8|13
+67|Ho|홀뮴|164.93|165|금속|8|14
+68|Er|어븀|167.26|167|금속|8|15
+69|Tm|툴륨|168.93|169|금속|8|16
+70|Yb|이터븀|173.05|173|금속|8|17
+71|Lu|루테튬|174.97|175|금속|8|18
+72|Hf|하프늄|178.49|178|금속|6|4
+73|Ta|탄탈럼|180.95|181|금속|6|5
+74|W|텅스텐|183.84|184|금속|6|6
+75|Re|레늄|186.21|186|금속|6|7
+76|Os|오스뮴|190.23|190|금속|6|8
+77|Ir|이리듐|192.22|192|금속|6|9
+78|Pt|백금|195.08|195|금속|6|10
+79|Au|금|196.97|197|금속|6|11
+80|Hg|수은|200.59|201|액체|6|12
+81|Tl|탈륨|204.38|204|금속|6|13
+82|Pb|납|207.2|207|금속|6|14
+83|Bi|비스무트|208.98|209|금속|6|15
+84|Po|폴로늄|209|209|금속|6|16
+85|At|아스타틴|210|210|금속|6|17
+86|Rn|라돈|222|222|기체|6|18
+87|Fr|프랑슘|223|223|금속|7|1
+88|Ra|라듐|226|226|금속|7|2
+89|Ac|악티늄|227|227|금속|9|4
+90|Th|토륨|232.04|232|금속|9|5
+91|Pa|프로트악티늄|231.04|231|금속|9|6
+92|U|우라늄|238.03|238|금속|9|7
+93|Np|넵투늄|237|237|금속|9|8
+94|Pu|플루토늄|244|244|금속|9|9
+95|Am|아메리슘|243|243|금속|9|10
+96|Cm|퀴륨|247|247|금속|9|11
+97|Bk|버클륨|247|247|금속|9|12
+98|Cf|캘리포늄|251|251|금속|9|13
+99|Es|아인슈타이늄|252|252|금속|9|14
+100|Fm|페르뮴|257|257|금속|9|15
+101|Md|멘델레븀|258|258|금속|9|16
+102|No|노벨륨|259|259|금속|9|17
+103|Lr|로렌슘|266|266|금속|9|18
+104|Rf|러더포듐|267|267|모름|7|4
+105|Db|더브늄|268|268|모름|7|5
+106|Sg|시보귬|269|269|모름|7|6
+107|Bh|보륨|270|270|모름|7|7
+108|Hs|하슘|277|277|모름|7|8
+109|Mt|마이트너륨|278|278|모름|7|9
+110|Ds|다름슈타튬|281|281|모름|7|10
+111|Rg|뢴트게늄|282|282|모름|7|11
+112|Cn|코페르니슘|285|285|모름|7|12
+113|Nh|니호늄|286|286|모름|7|13
+114|Fl|플레로븀|289|289|모름|7|14
+115|Mc|모스코븀|290|290|모름|7|15
+116|Lv|리버모륨|293|293|모름|7|16
+117|Ts|테네신|294|294|모름|7|17
+118|Og|오가네손|294|294|모름|7|18`;
 
-  {n:3,s:"Li",name:"리튬",aw:"6.94",m:"7",state:"금속",p:2,g:1},
-  {n:4,s:"Be",name:"베릴륨",aw:"9.0122",m:"9",state:"금속",p:2,g:2},
-  {n:5,s:"B",name:"붕소",aw:"10.81",m:"11",state:"금속",p:2,g:13},
-  {n:6,s:"C",name:"탄소",aw:"12.011",m:"12",state:"금속",p:2,g:14},
-  {n:7,s:"N",name:"질소",aw:"14.007",m:"14",state:"기체",p:2,g:15},
-  {n:8,s:"O",name:"산소",aw:"15.999",m:"16",state:"기체",p:2,g:16},
-  {n:9,s:"F",name:"플루오린",aw:"18.998",m:"19",state:"기체",p:2,g:17},
-  {n:10,s:"Ne",name:"네온",aw:"20.180",m:"20",state:"기체",p:2,g:18},
-
-  {n:11,s:"Na",name:"나트륨",aw:"22.990",m:"23",state:"금속",p:3,g:1},
-  {n:12,s:"Mg",name:"마그네슘",aw:"24.305",m:"24",state:"금속",p:3,g:2},
-  {n:13,s:"Al",name:"알루미늄",aw:"26.982",m:"27",state:"금속",p:3,g:13},
-  {n:14,s:"Si",name:"규소",aw:"28.085",m:"28",state:"금속",p:3,g:14},
-  {n:15,s:"P",name:"인",aw:"30.974",m:"31",state:"금속",p:3,g:15},
-  {n:16,s:"S",name:"황",aw:"32.06",m:"32",state:"금속",p:3,g:16},
-  {n:17,s:"Cl",name:"염소",aw:"35.45",m:"35",state:"기체",p:3,g:17},
-  {n:18,s:"Ar",name:"아르곤",aw:"39.948",m:"40",state:"기체",p:3,g:18},
-
-  {n:19,s:"K",name:"칼륨",aw:"39.098",m:"39",state:"금속",p:4,g:1},
-  {n:20,s:"Ca",name:"칼슘",aw:"40.078",m:"40",state:"금속",p:4,g:2},
-  {n:21,s:"Sc",name:"스칸듐",aw:"44.956",m:"45",state:"금속",p:4,g:3},
-  {n:22,s:"Ti",name:"타이타늄",aw:"47.867",m:"48",state:"금속",p:4,g:4},
-  {n:23,s:"V",name:"바나듐",aw:"50.942",m:"51",state:"금속",p:4,g:5},
-  {n:24,s:"Cr",name:"크로뮴",aw:"51.996",m:"52",state:"금속",p:4,g:6},
-  {n:25,s:"Mn",name:"망가니즈",aw:"54.938",m:"55",state:"금속",p:4,g:7},
-  {n:26,s:"Fe",name:"철",aw:"55.845",m:"56",state:"금속",p:4,g:8},
-  {n:27,s:"Co",name:"코발트",aw:"58.933",m:"59",state:"금속",p:4,g:9},
-  {n:28,s:"Ni",name:"니켈",aw:"58.693",m:"59",state:"금속",p:4,g:10},
-  {n:29,s:"Cu",name:"구리",aw:"63.546",m:"64",state:"금속",p:4,g:11},
-  {n:30,s:"Zn",name:"아연",aw:"65.38",m:"65",state:"금속",p:4,g:12},
-  {n:31,s:"Ga",name:"갈륨",aw:"69.723",m:"70",state:"금속",p:4,g:13},
-  {n:32,s:"Ge",name:"저마늄",aw:"72.630",m:"73",state:"금속",p:4,g:14},
-  {n:33,s:"As",name:"비소",aw:"74.922",m:"75",state:"금속",p:4,g:15},
-  {n:34,s:"Se",name:"셀레늄",aw:"78.971",m:"79",state:"금속",p:4,g:16},
-  {n:35,s:"Br",name:"브로민",aw:"79.904",m:"80",state:"액체",p:4,g:17},
-  {n:36,s:"Kr",name:"크립톤",aw:"83.798",m:"84",state:"기체",p:4,g:18},
-
-  {n:37,s:"Rb",name:"루비듐",aw:"85.468",m:"85",state:"금속",p:5,g:1},
-  {n:38,s:"Sr",name:"스트론튬",aw:"87.62",m:"88",state:"금속",p:5,g:2},
-  {n:39,s:"Y",name:"이트륨",aw:"88.906",m:"89",state:"금속",p:5,g:3},
-  {n:40,s:"Zr",name:"지르코늄",aw:"91.224",m:"91",state:"금속",p:5,g:4},
-  {n:41,s:"Nb",name:"나이오븀",aw:"92.906",m:"93",state:"금속",p:5,g:5},
-  {n:42,s:"Mo",name:"몰리브데넘",aw:"95.95",m:"96",state:"금속",p:5,g:6},
-  {n:43,s:"Tc",name:"테크네튬",aw:"98",m:"98",state:"금속",p:5,g:7},
-  {n:44,s:"Ru",name:"루테늄",aw:"101.07",m:"101",state:"금속",p:5,g:8},
-  {n:45,s:"Rh",name:"로듐",aw:"102.91",m:"103",state:"금속",p:5,g:9},
-  {n:46,s:"Pd",name:"팔라듐",aw:"106.42",m:"106",state:"금속",p:5,g:10},
-  {n:47,s:"Ag",name:"은",aw:"107.87",m:"108",state:"금속",p:5,g:11},
-  {n:48,s:"Cd",name:"카드뮴",aw:"112.41",m:"112",state:"금속",p:5,g:12},
-  {n:49,s:"In",name:"인듐",aw:"114.82",m:"115",state:"금속",p:5,g:13},
-  {n:50,s:"Sn",name:"주석",aw:"118.71",m:"119",state:"금속",p:5,g:14},
-  {n:51,s:"Sb",name:"안티모니",aw:"121.76",m:"122",state:"금속",p:5,g:15},
-  {n:52,s:"Te",name:"텔루륨",aw:"127.60",m:"128",state:"금속",p:5,g:16},
-  {n:53,s:"I",name:"아이오딘",aw:"126.90",m:"127",state:"금속",p:5,g:17},
-  {n:54,s:"Xe",name:"제논",aw:"131.29",m:"131",state:"기체",p:5,g:18},
-
-  {n:55,s:"Cs",name:"세슘",aw:"132.91",m:"133",state:"금속",p:6,g:1},
-  {n:56,s:"Ba",name:"바륨",aw:"137.33",m:"137",state:"금속",p:6,g:2},
-  {n:57,s:"La",name:"란타넘",aw:"138.91",m:"139",state:"금속",p:8,g:4},
-  {n:58,s:"Ce",name:"세륨",aw:"140.12",m:"140",state:"금속",p:8,g:5},
-  {n:59,s:"Pr",name:"프라세오디뮴",aw:"140.91",m:"141",state:"금속",p:8,g:6},
-  {n:60,s:"Nd",name:"네오디뮴",aw:"144.24",m:"144",state:"금속",p:8,g:7},
-  {n:61,s:"Pm",name:"프로메튬",aw:"145",m:"145",state:"금속",p:8,g:8},
-  {n:62,s:"Sm",name:"사마륨",aw:"150.36",m:"150",state:"금속",p:8,g:9},
-  {n:63,s:"Eu",name:"유로퓸",aw:"151.96",m:"152",state:"금속",p:8,g:10},
-  {n:64,s:"Gd",name:"가돌리늄",aw:"157.25",m:"157",state:"금속",p:8,g:11},
-  {n:65,s:"Tb",name:"터븀",aw:"158.93",m:"159",state:"금속",p:8,g:12},
-  {n:66,s:"Dy",name:"디스프로슘",aw:"162.50",m:"163",state:"금속",p:8,g:13},
-  {n:67,s:"Ho",name:"홀뮴",aw:"164.93",m:"165",state:"금속",p:8,g:14},
-  {n:68,s:"Er",name:"어븀",aw:"167.26",m:"167",state:"금속",p:8,g:15},
-  {n:69,s:"Tm",name:"툴륨",aw:"168.93",m:"169",state:"금속",p:8,g:16},
-  {n:70,s:"Yb",name:"이터븀",aw:"173.05",m:"173",state:"금속",p:8,g:17},
-  {n:71,s:"Lu",name:"루테튬",aw:"174.97",m:"175",state:"금속",p:8,g:18},
-  {n:72,s:"Hf",name:"하프늄",aw:"178.49",m:"178",state:"금속",p:6,g:4},
-  {n:73,s:"Ta",name:"탄탈럼",aw:"180.95",m:"181",state:"금속",p:6,g:5},
-  {n:74,s:"W",name:"텅스텐",aw:"183.84",m:"184",state:"금속",p:6,g:6},
-  {n:75,s:"Re",name:"레늄",aw:"186.21",m:"186",state:"금속",p:6,g:7},
-  {n:76,s:"Os",name:"오스뮴",aw:"190.23",m:"190",state:"금속",p:6,g:8},
-  {n:77,s:"Ir",name:"이리듐",aw:"192.22",m:"192",state:"금속",p:6,g:9},
-  {n:78,s:"Pt",name:"백금",aw:"195.08",m:"195",state:"금속",p:6,g:10},
-  {n:79,s:"Au",name:"금",aw:"196.97",m:"197",state:"금속",p:6,g:11},
-  {n:80,s:"Hg",name:"수은",aw:"200.59",m:"201",state:"액체",p:6,g:12},
-  {n:81,s:"Tl",name:"탈륨",aw:"204.38",m:"204",state:"금속",p:6,g:13},
-  {n:82,s:"Pb",name:"납",aw:"207.2",m:"207",state:"금속",p:6,g:14},
-  {n:83,s:"Bi",name:"비스무트",aw:"208.98",m:"209",state:"금속",p:6,g:15},
-  {n:84,s:"Po",name:"폴로늄",aw:"209",m:"209",state:"금속",p:6,g:16},
-  {n:85,s:"At",name:"아스타틴",aw:"210",m:"210",state:"금속",p:6,g:17},
-  {n:86,s:"Rn",name:"라돈",aw:"222",m:"222",state:"기체",p:6,g:18},
-
-  {n:87,s:"Fr",name:"프랑슘",aw:"223",m:"223",state:"금속",p:7,g:1},
-  {n:88,s:"Ra",name:"라듐",aw:"226",m:"226",state:"금속",p:7,g:2},
-  {n:89,s:"Ac",name:"악티늄",aw:"227",m:"227",state:"금속",p:9,g:4},
-  {n:90,s:"Th",name:"토륨",aw:"232.04",m:"232",state:"금속",p:9,g:5},
-  {n:91,s:"Pa",name:"프로트악티늄",aw:"231.04",m:"231",state:"금속",p:9,g:6},
-  {n:92,s:"U",name:"우라늄",aw:"238.03",m:"238",state:"금속",p:9,g:7},
-  {n:93,s:"Np",name:"넵투늄",aw:"237",m:"237",state:"금속",p:9,g:8},
-  {n:94,s:"Pu",name:"플루토늄",aw:"244",m:"244",state:"금속",p:9,g:9},
-  {n:95,s:"Am",name:"아메리슘",aw:"243",m:"243",state:"금속",p:9,g:10},
-  {n:96,s:"Cm",name:"퀴륨",aw:"247",m:"247",state:"금속",p:9,g:11},
-  {n:97,s:"Bk",name:"버클륨",aw:"247",m:"247",state:"금속",p:9,g:12},
-  {n:98,s:"Cf",name:"캘리포늄",aw:"251",m:"251",state:"금속",p:9,g:13},
-  {n:99,s:"Es",name:"아인슈타이늄",aw:"252",m:"252",state:"금속",p:9,g:14},
-  {n:100,s:"Fm",name:"페르뮴",aw:"257",m:"257",state:"금속",p:9,g:15},
-  {n:101,s:"Md",name:"멘델레븀",aw:"258",m:"258",state:"금속",p:9,g:16},
-  {n:102,s:"No",name:"노벨륨",aw:"259",m:"259",state:"금속",p:9,g:17},
-  {n:103,s:"Lr",name:"로렌슘",aw:"266",m:"266",state:"금속",p:9,g:18},
-
-  {n:104,s:"Rf",name:"러더포듐",aw:"267",m:"267",state:"모름",p:7,g:4},
-  {n:105,s:"Db",name:"더브늄",aw:"268",m:"268",state:"모름",p:7,g:5},
-  {n:106,s:"Sg",name:"시보귬",aw:"269",m:"269",state:"모름",p:7,g:6},
-  {n:107,s:"Bh",name:"보륨",aw:"270",m:"270",state:"모름",p:7,g:7},
-  {n:108,s:"Hs",name:"하슘",aw:"277",m:"277",state:"모름",p:7,g:8},
-  {n:109,s:"Mt",name:"마이트너륨",aw:"278",m:"278",state:"모름",p:7,g:9},
-  {n:110,s:"Ds",name:"다름슈타튬",aw:"281",m:"281",state:"모름",p:7,g:10},
-  {n:111,s:"Rg",name:"뢴트게늄",aw:"282",m:"282",state:"모름",p:7,g:11},
-  {n:112,s:"Cn",name:"코페르니슘",aw:"285",m:"285",state:"모름",p:7,g:12},
-  {n:113,s:"Nh",name:"니호늄",aw:"286",m:"286",state:"모름",p:7,g:13},
-  {n:114,s:"Fl",name:"플레로븀",aw:"289",m:"289",state:"모름",p:7,g:14},
-  {n:115,s:"Mc",name:"모스코븀",aw:"290",m:"290",state:"모름",p:7,g:15},
-  {n:116,s:"Lv",name:"리버모륨",aw:"293",m:"293",state:"모름",p:7,g:16},
-  {n:117,s:"Ts",name:"테네신",aw:"294",m:"294",state:"모름",p:7,g:17},
-  {n:118,s:"Og",name:"오가네손",aw:"294",m:"294",state:"모름",p:7,g:18}
-];
+const elements = rawElements.trim().split("\n").map(line => {
+  const [n, s, name, aw, m, state, p, g] = line.split("|");
+  return {
+    n: Number(n),
+    s,
+    name,
+    aw,
+    m,
+    state,
+    p: Number(p),
+    g: Number(g)
+  };
+});
 
 const fieldNames = {
   name: "원소 이름",
@@ -858,13 +1030,47 @@ function getValue(el, field) {
 }
 
 function normalize(v) {
-  return String(v).trim().toLowerCase().replace(/\s/g, "");
+  return String(v)
+    .trim()
+    .toLowerCase()
+    .replace(/\s/g, "")
+    .replaceAll("/", "")
+    .replaceAll("-", "");
+}
+
+function isCorrectAnswer(userInput, correctValue, field) {
+  const user = normalize(userInput);
+  const correct = normalize(correctValue);
+
+  if (field === "state") {
+    if (correct === "금속") {
+      return ["금속", "고체", "금속고체", "고체금속"].includes(user);
+    }
+    if (correct === "액체") {
+      return user === "액체";
+    }
+    if (correct === "기체") {
+      return user === "기체";
+    }
+    if (correct === "모름") {
+      return ["모름", "알수없음", "불명", "미상"].includes(user);
+    }
+  }
+
+  return user === correct;
 }
 
 function loadProfiles() {
   profiles = JSON.parse(localStorage.getItem("elementMemorizerProfiles") || "{}");
   currentNickname = localStorage.getItem("elementMemorizerCurrentNick") || "";
-  if (currentNickname && !profiles[currentNickname]) currentNickname = "";
+
+  if (currentNickname && profiles[currentNickname]) {
+    showScreen("homeScreen");
+  } else {
+    currentNickname = "";
+    showScreen("loginScreen");
+  }
+
   updateProfileUI();
 }
 
@@ -873,54 +1079,108 @@ function saveProfiles() {
   localStorage.setItem("elementMemorizerCurrentNick", currentNickname);
 }
 
-function loginNickname() {
-  const nick = document.getElementById("nicknameInput").value.trim();
+function checkNewNick() {
+  const nick = document.getElementById("newNickInput").value.trim();
+  const msg = document.getElementById("newNickMsg");
+
+  if (!nick) {
+    msg.textContent = "입력하면 사용 가능한 닉네임인지 표시됩니다.";
+    msg.className = "nickMsg";
+    return;
+  }
+
+  if (profiles[nick]) {
+    msg.textContent = "이미 사용중인 닉네임입니다.";
+    msg.className = "nickMsg no";
+  } else {
+    msg.textContent = "사용 가능한 닉네임입니다.";
+    msg.className = "nickMsg ok";
+  }
+}
+
+function startNewNickname() {
+  const nick = document.getElementById("newNickInput").value.trim();
+
   if (!nick) {
     alert("닉네임을 입력하세요.");
     return;
   }
 
-  if (!profiles[nick]) {
-    profiles[nick] = {
-      score: 0,
-      createdAt: Date.now()
-    };
-  }
-
-  currentNickname = nick;
-  document.getElementById("nicknameInput").value = "";
-  saveProfiles();
-  updateProfileUI();
-}
-
-function switchProfileFromSelect() {
-  const value = document.getElementById("profileSelect").value;
-  if (!value) return;
-  currentNickname = value;
-  saveProfiles();
-  updateProfileUI();
-}
-
-function deleteCurrentProfile() {
-  if (!currentNickname) {
-    alert("삭제할 닉네임이 없습니다.");
+  if (profiles[nick]) {
+    alert("이미 사용중인 닉네임입니다. 기존 닉네임으로 들어가기를 이용하세요.");
     return;
   }
 
-  if (!confirm(currentNickname + " 닉네임을 삭제할까요?")) return;
+  profiles[nick] = {
+    score: 0,
+    createdAt: Date.now()
+  };
 
-  delete profiles[currentNickname];
-  currentNickname = Object.keys(profiles)[0] || "";
+  currentNickname = nick;
   saveProfiles();
   updateProfileUI();
+  showScreen("homeScreen");
+}
+
+function enterOldNickname() {
+  const nick = document.getElementById("oldNickInput").value.trim();
+
+  if (!nick) {
+    alert("기존 닉네임을 입력하세요.");
+    return;
+  }
+
+  if (!profiles[nick]) {
+    alert("이미 사용중인 닉네임이 아닙니다.");
+    return;
+  }
+
+  currentNickname = nick;
+  saveProfiles();
+  updateProfileUI();
+  showScreen("homeScreen");
+}
+
+function logout() {
+  currentNickname = "";
+  localStorage.setItem("elementMemorizerCurrentNick", "");
+  document.getElementById("newNickInput").value = "";
+  document.getElementById("oldNickInput").value = "";
+  checkNewNick();
+  showScreen("loginScreen");
+}
+
+function deleteCurrentProfile() {
+  if (!currentNickname) return;
+
+  if (!confirm(currentNickname + " 닉네임의 점수와 등급을 초기화할까요?")) return;
+
+  delete profiles[currentNickname];
+  currentNickname = "";
+  saveProfiles();
+  showScreen("loginScreen");
 }
 
 function ensureProfile() {
   if (!currentNickname) {
     alert("먼저 닉네임을 입력하세요.");
+    showScreen("loginScreen");
     return false;
   }
   return true;
+}
+
+function buildThresholds() {
+  const arr = [0];
+  arr[1] = 10;
+
+  for (let i = 2; i < elements.length; i++) {
+    const previous = arr[i - 1];
+    const gap = Math.ceil(10 + Math.pow(i, 1.22) * 2.7);
+    arr[i] = previous + gap;
+  }
+
+  return arr;
 }
 
 function getGradeInfo(score) {
@@ -936,7 +1196,10 @@ function getGradeInfo(score) {
   const next = elements[gradeIndex + 1] || null;
   const currentNeed = thresholds[gradeIndex];
   const nextNeed = next ? thresholds[gradeIndex + 1] : thresholds[gradeIndex];
-  const progress = next ? Math.max(0, Math.min(100, ((score - currentNeed) / (nextNeed - currentNeed)) * 100)) : 100;
+
+  const progress = next
+    ? Math.max(0, Math.min(100, ((score - currentNeed) / (nextNeed - currentNeed)) * 100))
+    : 100;
 
   return {
     index: gradeIndex,
@@ -944,40 +1207,16 @@ function getGradeInfo(score) {
     next,
     currentNeed,
     nextNeed,
-    progress
+    progress,
+    thresholds
   };
 }
 
-function buildThresholds() {
-  const arr = [0];
-  let total = 0;
-
-  for (let i = 1; i < elements.length; i++) {
-    const increase = Math.ceil(10 + Math.pow(i, 1.18) * 2.2);
-    total += increase;
-    arr.push(total);
-  }
-
-  arr[1] = 10;
-
-  for (let i = 2; i < arr.length; i++) {
-    if (arr[i] <= arr[i - 1]) arr[i] = arr[i - 1] + Math.ceil(10 + i * 2);
-  }
-
-  return arr;
-}
-
 function updateProfileUI() {
-  const select = document.getElementById("profileSelect");
-  const names = Object.keys(profiles);
-  select.innerHTML = `<option value="">닉네임 선택</option>` + names.map(n => {
-    return `<option value="${escapeHtml(n)}" ${n === currentNickname ? "selected" : ""}>${escapeHtml(n)}</option>`;
-  }).join("");
-
-  const score = currentNickname ? profiles[currentNickname].score : 0;
+  const score = currentNickname && profiles[currentNickname] ? profiles[currentNickname].score : 0;
   const info = getGradeInfo(score);
 
-  document.getElementById("currentNickText").textContent = currentNickname || "없음";
+  document.getElementById("homeNickPill").textContent = currentNickname ? currentNickname : "닉네임 없음";
   document.getElementById("totalScoreText").textContent = score + "점";
   document.getElementById("gradeText").textContent = `${info.current.name} (${info.current.s})`;
 
@@ -1005,10 +1244,12 @@ function goHome() {
 
 function openTableScreen() {
   if (!ensureProfile()) return;
+
   if (quizRunning) {
     alert("퀴즈 진행 중에는 주기율표를 볼 수 없습니다.");
     return;
   }
+
   showScreen("tableScreen");
 }
 
@@ -1023,6 +1264,7 @@ function tryLeaveQuiz() {
     if (!confirm("퀴즈가 진행 중입니다. 나가면 현재 퀴즈는 사라집니다. 나갈까요?")) return;
     quizRunning = false;
   }
+
   resetQuizScreen();
   showScreen("homeScreen");
 }
@@ -1104,10 +1346,15 @@ function nextQuestion() {
 
     const div = document.createElement("div");
     div.className = "hintItem";
+
+    let value = getValue(element, field);
+    if (field === "state" && value === "금속") value = "금속/고체";
+
     div.innerHTML = `
       <div class="k">${fieldNames[field]}</div>
-      <div class="v">${escapeHtml(getValue(element, field))}</div>
+      <div class="v">${escapeHtml(value)}</div>
     `;
+
     hintGrid.appendChild(div);
   });
 }
@@ -1115,21 +1362,25 @@ function nextQuestion() {
 function submitAnswer() {
   if (!currentQuestion || answered) return;
 
-  const userAnswer = normalize(document.getElementById("answerInput").value);
-  const correctAnswer = normalize(getValue(currentQuestion.element, currentQuestion.targetField));
-  const answerRaw = getValue(currentQuestion.element, currentQuestion.targetField);
+  const input = document.getElementById("answerInput").value;
+  const rawAnswer = getValue(currentQuestion.element, currentQuestion.targetField);
+  const field = currentQuestion.targetField;
+  const correct = isCorrectAnswer(input, rawAnswer, field);
 
   answered = true;
   document.getElementById("answerInput").disabled = true;
   document.getElementById("submitBtn").disabled = true;
   document.getElementById("nextBtn").disabled = false;
 
-  if (userAnswer === correctAnswer) {
+  let displayAnswer = rawAnswer;
+  if (field === "state" && rawAnswer === "금속") displayAnswer = "금속 또는 고체";
+
+  if (correct) {
     quizCorrect++;
     document.getElementById("feedback").innerHTML = `<span class="ok">정답! +1점</span>`;
   } else {
     quizWrong++;
-    document.getElementById("feedback").innerHTML = `<span class="no">오답! 정답은 ${escapeHtml(answerRaw)}입니다.</span>`;
+    document.getElementById("feedback").innerHTML = `<span class="no">오답! 정답은 ${escapeHtml(displayAnswer)}입니다.</span>`;
   }
 
   document.getElementById("quizScoreText").textContent = `현재 점수 ${quizCorrect}점`;
@@ -1142,7 +1393,6 @@ function submitAnswer() {
 function endQuiz() {
   quizRunning = false;
 
-  const oldScore = profiles[currentNickname].score;
   profiles[currentNickname].score += quizCorrect;
   saveProfiles();
 
@@ -1154,7 +1404,7 @@ function endQuiz() {
   document.getElementById("resultPanel").classList.add("active");
 
   document.getElementById("finalScoreText").textContent = `+${quizCorrect}점`;
-  document.getElementById("finalWrongText").textContent = `${quizTotal}문제 중 ${quizWrong}개 틀렸습니다. 총점: ${newScore}점`;
+  document.getElementById("finalWrongText").textContent = `${quizWrong}개 틀렸습니다. 현재 총점: ${newScore}점`;
 
   if (beforeGrade !== afterGrade) {
     document.getElementById("gradeUpText").innerHTML = `<span class="ok">등급 상승! ${beforeGrade} → ${afterGrade}</span>`;
@@ -1173,6 +1423,7 @@ function finishQuiz() {
 function buildPeriodicTable() {
   const groupHeader = document.getElementById("groupHeader");
   groupHeader.innerHTML = "";
+
   for (let i = 1; i <= 18; i++) {
     const div = document.createElement("div");
     div.className = "groupNum";
@@ -1211,13 +1462,15 @@ function buildPeriodicTable() {
     div.style.gridColumn = el.g;
     div.style.gridRow = el.p;
 
+    const stateText = el.state === "금속" ? "금속/고체" : el.state;
+
     div.innerHTML = `
       <div class="elNumber field-number">${el.n}</div>
       <div class="elSymbol field-symbol">${el.s}</div>
       <div class="elName field-name">${el.name}</div>
       <div class="elSmall field-atomicWeight">원자량 ${el.aw}</div>
       <div class="elSmall field-massNumber">질량수 ${el.m}</div>
-      <div class="elSmall field-state">${el.state}</div>
+      <div class="elSmall field-state">${stateText}</div>
     `;
 
     periodic.appendChild(div);
@@ -1227,9 +1480,15 @@ function buildPeriodicTable() {
     btn.onclick = () => {
       btn.classList.toggle("active");
       const field = btn.dataset.field;
+
       document.querySelectorAll(".field-" + field).forEach(x => {
         x.classList.toggle("hiddenField");
       });
+
+      if (field === "state") {
+        const isStateOn = btn.classList.contains("active");
+        document.getElementById("periodic").classList.toggle("stateHiddenMode", !isStateOn);
+      }
     };
   });
 }
@@ -1237,6 +1496,38 @@ function buildPeriodicTable() {
 function setZoom(value) {
   document.getElementById("tableScale").style.transform = `scale(${value / 100})`;
   document.getElementById("zoomText").textContent = value + "%";
+}
+
+function openGradeModal() {
+  if (!ensureProfile()) return;
+
+  const score = profiles[currentNickname].score;
+  const info = getGradeInfo(score);
+  const list = document.getElementById("gradeList");
+
+  list.innerHTML = "";
+
+  elements.forEach((el, index) => {
+    const row = document.createElement("div");
+    row.className = "gradeRow" + (index === info.index ? " current" : "");
+
+    row.innerHTML = `
+      <div class="gradeSymbol">${el.s}</div>
+      <div>
+        <div style="font-weight:1000;">${el.name} 등급</div>
+        <div style="font-size:13px; color:#cbd5e1;">원소 번호 ${el.n}</div>
+      </div>
+      <div class="gradeNeed">${info.thresholds[index]}점 필요</div>
+    `;
+
+    list.appendChild(row);
+  });
+
+  document.getElementById("gradeModalBack").classList.add("active");
+}
+
+function closeGradeModal(event) {
+  document.getElementById("gradeModalBack").classList.remove("active");
 }
 
 function escapeHtml(str) {
