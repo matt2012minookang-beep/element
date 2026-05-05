@@ -13,182 +13,686 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #1f2937, #020617 70%);
+      background: radial-gradient(circle at top, #1e293b, #020617 72%);
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow-x: hidden;
     }
 
-    .main {
-      width: min(920px, 92vw);
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 28px;
-      padding: 38px 28px;
-      text-align: center;
-      box-shadow: 0 24px 80px rgba(0,0,0,.35);
-      backdrop-filter: blur(16px);
-    }
-
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(32px, 5vw, 56px);
-    }
-
-    .sub {
-      color: #cbd5e1;
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-
-    .btn {
+    button {
       border: 0;
-      border-radius: 18px;
-      padding: 16px 24px;
-      font-size: 18px;
-      font-weight: 800;
       cursor: pointer;
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      font-weight: 900;
       color: white;
-      box-shadow: 0 12px 30px rgba(56,189,248,.25);
-      transition: .18s;
-      margin: 6px;
+      border-radius: 16px;
+      padding: 13px 18px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      box-shadow: 0 12px 28px rgba(56,189,248,.18);
+      transition: .16s;
     }
 
-    .btn:hover {
+    button:hover {
       transform: translateY(-2px);
       filter: brightness(1.08);
     }
 
-    .quizBox {
-      margin-top: 28px;
-      background: rgba(15, 23, 42, .7);
-      border-radius: 24px;
-      padding: 24px;
-      text-align: left;
-      border: 1px solid rgba(255,255,255,.12);
+    button.secondary {
+      background: #334155;
+      box-shadow: none;
     }
 
-    .quizBox h2 {
-      margin-top: 0;
-      text-align: center;
+    button.danger {
+      background: linear-gradient(135deg, #fb7185, #dc2626);
     }
 
-    .checks {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin: 16px 0 20px;
+    input, select {
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(15, 23, 42, .9);
+      color: white;
+      border-radius: 14px;
+      padding: 12px 14px;
+      outline: none;
+      font-size: 15px;
     }
 
     label {
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.12);
-      padding: 12px;
-      border-radius: 14px;
-      cursor: pointer;
       user-select: none;
     }
 
-    input[type="checkbox"] {
-      transform: scale(1.2);
-      margin-right: 6px;
-    }
-
-    .quizCard {
+    .screen {
       display: none;
-      margin-top: 20px;
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .centerWrap {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(980px, 94vw);
       background: rgba(255,255,255,.08);
-      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 30px;
+      padding: 32px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.36);
+      backdrop-filter: blur(16px);
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 66px);
+      margin: 0 0 10px;
+      text-align: center;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+    }
+
+    .sub {
+      color: #cbd5e1;
+      text-align: center;
+      line-height: 1.65;
+      margin-bottom: 26px;
+    }
+
+    .profileBox {
+      background: rgba(15, 23, 42, .68);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 24px;
       padding: 20px;
-      border: 1px solid rgba(255,255,255,.14);
+      margin-bottom: 22px;
     }
 
-    .hint {
-      text-align: center;
-      margin-bottom: 18px;
-      font-size: 18px;
-      color: #e0f2fe;
-    }
-
-    .bigSymbol {
-      text-align: center;
-      font-size: 58px;
-      font-weight: 900;
-      margin: 10px 0;
-    }
-
-    .answerArea {
-      display: grid;
+    .profileRow {
+      display: flex;
+      flex-wrap: wrap;
       gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
-    .answerArea input {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(2,6,23,.7);
+    .profileInfo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat .label {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .stat .value {
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    .progressBar {
+      height: 16px;
+      background: rgba(15,23,42,.8);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      margin-top: 9px;
+    }
+
+    .progressFill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa);
+      transition: .25s;
+    }
+
+    .menuGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .menuBtn {
+      min-height: 110px;
+      font-size: 22px;
+      border-radius: 24px;
+    }
+
+    .topBar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(2, 6, 23, .92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      padding: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin: -28px -28px 20px;
+    }
+
+    .topLeft, .topRight {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill {
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 10px 13px;
+      border-radius: 999px;
+      color: #dbeafe;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .tableControls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+
+    .toggleBtn {
+      background: #475569;
+      padding: 10px 12px;
+      box-shadow: none;
+      font-size: 14px;
+    }
+
+    .toggleBtn.active {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 10px 0 18px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .tableOuter {
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 22px;
+      background: rgba(15,23,42,.65);
+      padding: 18px;
+      max-height: calc(100vh - 210px);
+    }
+
+    .tableScale {
+      width: max-content;
+      transform-origin: top left;
+      transition: transform .12s;
+    }
+
+    .groupHeader {
+      display: grid;
+      grid-template-columns: repeat(18, 82px);
+      gap: 7px;
+      margin-left: 28px;
+      margin-bottom: 5px;
+    }
+
+    .groupNum {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .periodic {
+      display: grid;
+      grid-template-columns: repeat(18, 82px);
+      grid-template-rows: repeat(9, 92px);
+      gap: 7px;
+      position: relative;
+      margin-left: 28px;
+    }
+
+    .periodLabel {
+      position: absolute;
+      left: -30px;
+      width: 25px;
+      height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-weight: 900;
+      font-size: 12px;
+      writing-mode: vertical-rl;
+    }
+
+    .element {
+      border-radius: 13px;
+      padding: 6px;
+      border: 1px solid rgba(255,255,255,.26);
+      overflow: hidden;
+      box-shadow: inset 0 0 18px rgba(255,255,255,.09);
+    }
+
+    .금속 {
+      background: linear-gradient(135deg, #fde047, #b45309);
+      color: #111827;
+    }
+
+    .액체 {
+      background: linear-gradient(135deg, #38bdf8, #1d4ed8);
       color: white;
-      font-size: 16px;
-      outline: none;
     }
 
-    .result {
+    .기체 {
+      background: linear-gradient(135deg, #fb7185, #b91c1c);
+      color: white;
+    }
+
+    .모름 {
+      background: linear-gradient(135deg, #94a3b8, #475569);
+      color: white;
+    }
+
+    .elNumber {
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .elSymbol {
+      font-size: 24px;
+      font-weight: 1000;
+      text-align: center;
+      line-height: 1.05;
+    }
+
+    .elName {
+      font-size: 11px;
+      text-align: center;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .elSmall {
+      font-size: 10px;
+      line-height: 1.25;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .hiddenField {
+      visibility: hidden;
+    }
+
+    .seriesBox {
+      background: rgba(255,255,255,.08);
+      border: 1px dashed rgba(255,255,255,.28);
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 950;
+      line-height: 1.45;
+    }
+
+    .quizSetup {
+      width: min(980px, 96vw);
+      margin: 0 auto;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 28px;
+      padding: 24px;
+    }
+
+    .quizOptions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .quizOptions label {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 16px;
+      padding: 13px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .lengthBtns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+      margin: 12px 0 20px;
+    }
+
+    .lengthBtn {
+      background: #334155;
+      box-shadow: none;
+    }
+
+    .lengthBtn.active {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+
+    .quizPlay {
+      display: none;
+      width: min(900px, 96vw);
+      margin: 0 auto;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 28px;
+      padding: 24px;
+    }
+
+    .quizPlay.active {
+      display: block;
+    }
+
+    .quizQuestionTop {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .hintGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .hintItem {
+      background: rgba(15,23,42,.72);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 13px;
+    }
+
+    .hintItem .k {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .hintItem .v {
+      font-size: 19px;
+      font-weight: 950;
+    }
+
+    .answerBox {
+      background: rgba(15,23,42,.72);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 10px;
+    }
+
+    .answerBox input {
+      width: 100%;
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .feedback {
       margin-top: 14px;
       line-height: 1.7;
-      font-weight: 700;
+      font-weight: 900;
     }
 
-    .ok { color: #86efac; }
-    .no { color: #fca5a5; }
+    .ok {
+      color: #86efac;
+    }
 
-    .small {
-      color: #94a3b8;
-      font-size: 14px;
+    .no {
+      color: #fca5a5;
+    }
+
+    .resultPanel {
+      display: none;
+      width: min(760px, 94vw);
+      margin: 0 auto;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 28px;
+      padding: 28px;
       text-align: center;
-      margin-top: 12px;
+    }
+
+    .resultPanel.active {
+      display: block;
+    }
+
+    .resultBig {
+      font-size: 48px;
+      font-weight: 1000;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 760px) {
+      .screen {
+        padding: 18px;
+      }
+
+      .topBar {
+        margin: -18px -18px 18px;
+      }
+
+      .groupHeader {
+        grid-template-columns: repeat(18, 74px);
+      }
+
+      .periodic {
+        grid-template-columns: repeat(18, 74px);
+        grid-template-rows: repeat(9, 86px);
+      }
+
+      .element {
+        padding: 5px;
+      }
+
+      .elSymbol {
+        font-size: 21px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="main">
-    <h1>원소 외우기</h1>
-    <p class="sub">
-      주기율표를 보면서 원소 이름, 기호, 번호, 원자량, 질량수, 상태를 켜고 끄며 외우고,<br>
-      원하는 항목만 골라 퀴즈로 연습할 수 있습니다.
-    </p>
 
-    <button class="btn" onclick="openPeriodicTable()">주기율표 보기</button>
+<section id="homeScreen" class="screen active">
+  <div class="centerWrap">
+    <div class="card">
+      <h1>원소 외우기</h1>
+      <p class="sub">
+        주기율표를 보며 외우고, 원소 이름·기호·번호·원자량·질량수·상태 퀴즈를 풀 수 있습니다.<br>
+        닉네임마다 점수와 등급이 따로 저장됩니다.
+      </p>
 
-    <div class="quizBox">
-      <h2>퀴즈 풀기</h2>
-      <div class="small">맞힐 항목을 선택한 뒤 퀴즈 시작을 누르세요.</div>
+      <div class="profileBox">
+        <div class="profileRow">
+          <input id="nicknameInput" placeholder="닉네임 입력" />
+          <button onclick="loginNickname()">닉네임 시작</button>
+          <select id="profileSelect" onchange="switchProfileFromSelect()"></select>
+          <button class="secondary" onclick="deleteCurrentProfile()">현재 닉네임 삭제</button>
+        </div>
 
-      <div class="checks">
-        <label><input type="checkbox" class="quizField" value="name" checked> 원소 이름</label>
-        <label><input type="checkbox" class="quizField" value="symbol"> 원소 기호</label>
-        <label><input type="checkbox" class="quizField" value="number"> 원소 번호</label>
-        <label><input type="checkbox" class="quizField" value="atomicWeight"> 원자량</label>
-        <label><input type="checkbox" class="quizField" value="massNumber"> 질량수</label>
-        <label><input type="checkbox" class="quizField" value="state"> 상태</label>
+        <div class="profileInfo">
+          <div class="stat">
+            <div class="label">현재 닉네임</div>
+            <div class="value" id="currentNickText">없음</div>
+          </div>
+          <div class="stat">
+            <div class="label">총 점수</div>
+            <div class="value" id="totalScoreText">0점</div>
+          </div>
+          <div class="stat">
+            <div class="label">현재 등급</div>
+            <div class="value" id="gradeText">수소</div>
+          </div>
+          <div class="stat">
+            <div class="label">다음 등급까지</div>
+            <div class="value" id="nextGradeText">10점</div>
+            <div class="progressBar">
+              <div class="progressFill" id="gradeProgress"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div style="text-align:center;">
-        <button class="btn" onclick="startQuiz()">퀴즈 시작</button>
-        <button class="btn" onclick="checkQuiz()">정답 확인</button>
-        <button class="btn" onclick="nextQuiz()">다음 문제</button>
-      </div>
-
-      <div class="quizCard" id="quizCard">
-        <div class="hint" id="quizHint"></div>
-        <div class="bigSymbol" id="quizDisplay">?</div>
-        <div class="answerArea" id="answerArea"></div>
-        <div class="result" id="quizResult"></div>
+      <div class="menuGrid">
+        <button class="menuBtn" onclick="openTableScreen()">주기율표 보기</button>
+        <button class="menuBtn" onclick="openQuizScreen()">퀴즈 풀기</button>
       </div>
     </div>
   </div>
+</section>
+
+<section id="tableScreen" class="screen">
+  <div class="topBar">
+    <div class="topLeft">
+      <button class="secondary" onclick="goHome()">← 되돌아가기</button>
+      <span class="pill">주기율표</span>
+    </div>
+    <div class="topRight">
+      <span class="pill" id="tableProfilePill">닉네임 없음</span>
+    </div>
+  </div>
+
+  <div class="tableControls">
+    <button class="toggleBtn active" data-field="number">원소 번호</button>
+    <button class="toggleBtn active" data-field="symbol">원소 기호</button>
+    <button class="toggleBtn active" data-field="name">원소 이름</button>
+    <button class="toggleBtn active" data-field="atomicWeight">원자량</button>
+    <button class="toggleBtn active" data-field="massNumber">질량수</button>
+    <button class="toggleBtn active" data-field="state">상태</button>
+
+    <span class="pill">확대/축소</span>
+    <input id="zoomRange" type="range" min="50" max="180" value="100" oninput="setZoom(this.value)" />
+    <span class="pill" id="zoomText">100%</span>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:#fde047"></span>금속/고체</span>
+    <span><span class="dot" style="background:#38bdf8"></span>액체</span>
+    <span><span class="dot" style="background:#fb7185"></span>기체</span>
+    <span><span class="dot" style="background:#94a3b8"></span>모름</span>
+  </div>
+
+  <div class="tableOuter">
+    <div class="tableScale" id="tableScale">
+      <div class="groupHeader" id="groupHeader"></div>
+      <div class="periodic" id="periodic"></div>
+    </div>
+  </div>
+</section>
+
+<section id="quizScreen" class="screen">
+  <div class="topBar">
+    <div class="topLeft">
+      <button class="secondary" id="quizBackBtn" onclick="tryLeaveQuiz()">← 되돌아가기</button>
+      <span class="pill">퀴즈</span>
+    </div>
+    <div class="topRight">
+      <span class="pill" id="quizProfilePill">닉네임 없음</span>
+    </div>
+  </div>
+
+  <div id="quizSetup" class="quizSetup">
+    <h2>퀴즈 설정</h2>
+    <p class="sub" style="text-align:left; margin-bottom:10px;">
+      맞힐 항목을 고르세요. 문제에서는 맞혀야 하는 항목을 제외한 나머지 정보가 전부 힌트로 표시됩니다.
+    </p>
+
+    <h3>맞힐 항목</h3>
+    <div class="quizOptions">
+      <label><input type="checkbox" class="quizField" value="name" checked> 원소 이름</label>
+      <label><input type="checkbox" class="quizField" value="symbol"> 원소 기호</label>
+      <label><input type="checkbox" class="quizField" value="number"> 원소 번호</label>
+      <label><input type="checkbox" class="quizField" value="atomicWeight"> 원자량</label>
+      <label><input type="checkbox" class="quizField" value="massNumber"> 질량수</label>
+      <label><input type="checkbox" class="quizField" value="state"> 상태</label>
+    </div>
+
+    <h3>문제 수</h3>
+    <div class="lengthBtns">
+      <button class="lengthBtn active" data-count="10" onclick="selectQuizLength(10)">10개 맞추기</button>
+      <button class="lengthBtn" data-count="20" onclick="selectQuizLength(20)">20개 맞추기</button>
+      <button class="lengthBtn" data-count="30" onclick="selectQuizLength(30)">30개 맞추기</button>
+      <button class="lengthBtn" data-count="40" onclick="selectQuizLength(40)">40개 맞추기</button>
+      <button class="lengthBtn" data-count="50" onclick="selectQuizLength(50)">50개 맞추기</button>
+    </div>
+
+    <button onclick="startQuiz()">퀴즈 시작</button>
+  </div>
+
+  <div id="quizPlay" class="quizPlay">
+    <div class="quizQuestionTop">
+      <span class="pill" id="quizProgressText">1 / 10</span>
+      <span class="pill" id="quizScoreText">현재 점수 0점</span>
+      <span class="pill">진행 중에는 주기율표 보기 불가</span>
+    </div>
+
+    <h2 id="questionTitle">원소 이름 맞히기</h2>
+    <div class="hintGrid" id="hintGrid"></div>
+
+    <div class="answerBox">
+      <div id="answerLabel">정답 입력</div>
+      <input id="answerInput" autocomplete="off" onkeydown="if(event.key==='Enter') submitAnswer()" />
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button id="submitBtn" onclick="submitAnswer()">정답 확인</button>
+      <button id="nextBtn" class="secondary" onclick="nextQuestion()" disabled>다음 문제</button>
+    </div>
+  </div>
+
+  <div id="resultPanel" class="resultPanel">
+    <h2>퀴즈 결과</h2>
+    <div class="resultBig" id="finalScoreText">0점</div>
+    <p id="finalWrongText"></p>
+    <p id="gradeUpText"></p>
+    <button onclick="finishQuiz()">메인으로</button>
+  </div>
+</section>
 
 <script>
 const elements = [
@@ -253,21 +757,21 @@ const elements = [
 
   {n:55,s:"Cs",name:"세슘",aw:"132.91",m:"133",state:"금속",p:6,g:1},
   {n:56,s:"Ba",name:"바륨",aw:"137.33",m:"137",state:"금속",p:6,g:2},
-  {n:57,s:"La",name:"란타넘",aw:"138.91",m:"139",state:"금속",p:8,g:4,series:"란타넘족"},
-  {n:58,s:"Ce",name:"세륨",aw:"140.12",m:"140",state:"금속",p:8,g:5,series:"란타넘족"},
-  {n:59,s:"Pr",name:"프라세오디뮴",aw:"140.91",m:"141",state:"금속",p:8,g:6,series:"란타넘족"},
-  {n:60,s:"Nd",name:"네오디뮴",aw:"144.24",m:"144",state:"금속",p:8,g:7,series:"란타넘족"},
-  {n:61,s:"Pm",name:"프로메튬",aw:"145",m:"145",state:"금속",p:8,g:8,series:"란타넘족"},
-  {n:62,s:"Sm",name:"사마륨",aw:"150.36",m:"150",state:"금속",p:8,g:9,series:"란타넘족"},
-  {n:63,s:"Eu",name:"유로퓸",aw:"151.96",m:"152",state:"금속",p:8,g:10,series:"란타넘족"},
-  {n:64,s:"Gd",name:"가돌리늄",aw:"157.25",m:"157",state:"금속",p:8,g:11,series:"란타넘족"},
-  {n:65,s:"Tb",name:"터븀",aw:"158.93",m:"159",state:"금속",p:8,g:12,series:"란타넘족"},
-  {n:66,s:"Dy",name:"디스프로슘",aw:"162.50",m:"163",state:"금속",p:8,g:13,series:"란타넘족"},
-  {n:67,s:"Ho",name:"홀뮴",aw:"164.93",m:"165",state:"금속",p:8,g:14,series:"란타넘족"},
-  {n:68,s:"Er",name:"어븀",aw:"167.26",m:"167",state:"금속",p:8,g:15,series:"란타넘족"},
-  {n:69,s:"Tm",name:"툴륨",aw:"168.93",m:"169",state:"금속",p:8,g:16,series:"란타넘족"},
-  {n:70,s:"Yb",name:"이터븀",aw:"173.05",m:"173",state:"금속",p:8,g:17,series:"란타넘족"},
-  {n:71,s:"Lu",name:"루테튬",aw:"174.97",m:"175",state:"금속",p:8,g:18,series:"란타넘족"},
+  {n:57,s:"La",name:"란타넘",aw:"138.91",m:"139",state:"금속",p:8,g:4},
+  {n:58,s:"Ce",name:"세륨",aw:"140.12",m:"140",state:"금속",p:8,g:5},
+  {n:59,s:"Pr",name:"프라세오디뮴",aw:"140.91",m:"141",state:"금속",p:8,g:6},
+  {n:60,s:"Nd",name:"네오디뮴",aw:"144.24",m:"144",state:"금속",p:8,g:7},
+  {n:61,s:"Pm",name:"프로메튬",aw:"145",m:"145",state:"금속",p:8,g:8},
+  {n:62,s:"Sm",name:"사마륨",aw:"150.36",m:"150",state:"금속",p:8,g:9},
+  {n:63,s:"Eu",name:"유로퓸",aw:"151.96",m:"152",state:"금속",p:8,g:10},
+  {n:64,s:"Gd",name:"가돌리늄",aw:"157.25",m:"157",state:"금속",p:8,g:11},
+  {n:65,s:"Tb",name:"터븀",aw:"158.93",m:"159",state:"금속",p:8,g:12},
+  {n:66,s:"Dy",name:"디스프로슘",aw:"162.50",m:"163",state:"금속",p:8,g:13},
+  {n:67,s:"Ho",name:"홀뮴",aw:"164.93",m:"165",state:"금속",p:8,g:14},
+  {n:68,s:"Er",name:"어븀",aw:"167.26",m:"167",state:"금속",p:8,g:15},
+  {n:69,s:"Tm",name:"툴륨",aw:"168.93",m:"169",state:"금속",p:8,g:16},
+  {n:70,s:"Yb",name:"이터븀",aw:"173.05",m:"173",state:"금속",p:8,g:17},
+  {n:71,s:"Lu",name:"루테튬",aw:"174.97",m:"175",state:"금속",p:8,g:18},
   {n:72,s:"Hf",name:"하프늄",aw:"178.49",m:"178",state:"금속",p:6,g:4},
   {n:73,s:"Ta",name:"탄탈럼",aw:"180.95",m:"181",state:"금속",p:6,g:5},
   {n:74,s:"W",name:"텅스텐",aw:"183.84",m:"184",state:"금속",p:6,g:6},
@@ -286,21 +790,21 @@ const elements = [
 
   {n:87,s:"Fr",name:"프랑슘",aw:"223",m:"223",state:"금속",p:7,g:1},
   {n:88,s:"Ra",name:"라듐",aw:"226",m:"226",state:"금속",p:7,g:2},
-  {n:89,s:"Ac",name:"악티늄",aw:"227",m:"227",state:"금속",p:9,g:4,series:"악티늄족"},
-  {n:90,s:"Th",name:"토륨",aw:"232.04",m:"232",state:"금속",p:9,g:5,series:"악티늄족"},
-  {n:91,s:"Pa",name:"프로트악티늄",aw:"231.04",m:"231",state:"금속",p:9,g:6,series:"악티늄족"},
-  {n:92,s:"U",name:"우라늄",aw:"238.03",m:"238",state:"금속",p:9,g:7,series:"악티늄족"},
-  {n:93,s:"Np",name:"넵투늄",aw:"237",m:"237",state:"금속",p:9,g:8,series:"악티늄족"},
-  {n:94,s:"Pu",name:"플루토늄",aw:"244",m:"244",state:"금속",p:9,g:9,series:"악티늄족"},
-  {n:95,s:"Am",name:"아메리슘",aw:"243",m:"243",state:"금속",p:9,g:10,series:"악티늄족"},
-  {n:96,s:"Cm",name:"퀴륨",aw:"247",m:"247",state:"금속",p:9,g:11,series:"악티늄족"},
-  {n:97,s:"Bk",name:"버클륨",aw:"247",m:"247",state:"금속",p:9,g:12,series:"악티늄족"},
-  {n:98,s:"Cf",name:"캘리포늄",aw:"251",m:"251",state:"금속",p:9,g:13,series:"악티늄족"},
-  {n:99,s:"Es",name:"아인슈타이늄",aw:"252",m:"252",state:"금속",p:9,g:14,series:"악티늄족"},
-  {n:100,s:"Fm",name:"페르뮴",aw:"257",m:"257",state:"금속",p:9,g:15,series:"악티늄족"},
-  {n:101,s:"Md",name:"멘델레븀",aw:"258",m:"258",state:"금속",p:9,g:16,series:"악티늄족"},
-  {n:102,s:"No",name:"노벨륨",aw:"259",m:"259",state:"금속",p:9,g:17,series:"악티늄족"},
-  {n:103,s:"Lr",name:"로렌슘",aw:"266",m:"266",state:"금속",p:9,g:18,series:"악티늄족"},
+  {n:89,s:"Ac",name:"악티늄",aw:"227",m:"227",state:"금속",p:9,g:4},
+  {n:90,s:"Th",name:"토륨",aw:"232.04",m:"232",state:"금속",p:9,g:5},
+  {n:91,s:"Pa",name:"프로트악티늄",aw:"231.04",m:"231",state:"금속",p:9,g:6},
+  {n:92,s:"U",name:"우라늄",aw:"238.03",m:"238",state:"금속",p:9,g:7},
+  {n:93,s:"Np",name:"넵투늄",aw:"237",m:"237",state:"금속",p:9,g:8},
+  {n:94,s:"Pu",name:"플루토늄",aw:"244",m:"244",state:"금속",p:9,g:9},
+  {n:95,s:"Am",name:"아메리슘",aw:"243",m:"243",state:"금속",p:9,g:10},
+  {n:96,s:"Cm",name:"퀴륨",aw:"247",m:"247",state:"금속",p:9,g:11},
+  {n:97,s:"Bk",name:"버클륨",aw:"247",m:"247",state:"금속",p:9,g:12},
+  {n:98,s:"Cf",name:"캘리포늄",aw:"251",m:"251",state:"금속",p:9,g:13},
+  {n:99,s:"Es",name:"아인슈타이늄",aw:"252",m:"252",state:"금속",p:9,g:14},
+  {n:100,s:"Fm",name:"페르뮴",aw:"257",m:"257",state:"금속",p:9,g:15},
+  {n:101,s:"Md",name:"멘델레븀",aw:"258",m:"258",state:"금속",p:9,g:16},
+  {n:102,s:"No",name:"노벨륨",aw:"259",m:"259",state:"금속",p:9,g:17},
+  {n:103,s:"Lr",name:"로렌슘",aw:"266",m:"266",state:"금속",p:9,g:18},
 
   {n:104,s:"Rf",name:"러더포듐",aw:"267",m:"267",state:"모름",p:7,g:4},
   {n:105,s:"Db",name:"더브늄",aw:"268",m:"268",state:"모름",p:7,g:5},
@@ -328,405 +832,424 @@ const fieldNames = {
   state: "상태"
 };
 
-let currentQuizElement = null;
-let currentQuizFields = [];
+const fieldOrder = ["number", "symbol", "name", "atomicWeight", "massNumber", "state"];
+
+let profiles = {};
+let currentNickname = "";
+let selectedQuizLength = 10;
+let quizRunning = false;
+let quizFields = [];
+let quizTotal = 10;
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizWrong = 0;
+let currentQuestion = null;
+let answered = false;
+let gradeBeforeQuiz = null;
 
 function getValue(el, field) {
-  if (field === "name") return el.name;
-  if (field === "symbol") return el.s;
   if (field === "number") return String(el.n);
+  if (field === "symbol") return el.s;
+  if (field === "name") return el.name;
   if (field === "atomicWeight") return el.aw;
   if (field === "massNumber") return el.m;
   if (field === "state") return el.state;
   return "";
 }
 
-function normalizeAnswer(v) {
+function normalize(v) {
   return String(v).trim().toLowerCase().replace(/\s/g, "");
 }
 
-function startQuiz() {
-  currentQuizFields = [...document.querySelectorAll(".quizField:checked")].map(x => x.value);
+function loadProfiles() {
+  profiles = JSON.parse(localStorage.getItem("elementMemorizerProfiles") || "{}");
+  currentNickname = localStorage.getItem("elementMemorizerCurrentNick") || "";
+  if (currentNickname && !profiles[currentNickname]) currentNickname = "";
+  updateProfileUI();
+}
 
-  if (currentQuizFields.length === 0) {
+function saveProfiles() {
+  localStorage.setItem("elementMemorizerProfiles", JSON.stringify(profiles));
+  localStorage.setItem("elementMemorizerCurrentNick", currentNickname);
+}
+
+function loginNickname() {
+  const nick = document.getElementById("nicknameInput").value.trim();
+  if (!nick) {
+    alert("닉네임을 입력하세요.");
+    return;
+  }
+
+  if (!profiles[nick]) {
+    profiles[nick] = {
+      score: 0,
+      createdAt: Date.now()
+    };
+  }
+
+  currentNickname = nick;
+  document.getElementById("nicknameInput").value = "";
+  saveProfiles();
+  updateProfileUI();
+}
+
+function switchProfileFromSelect() {
+  const value = document.getElementById("profileSelect").value;
+  if (!value) return;
+  currentNickname = value;
+  saveProfiles();
+  updateProfileUI();
+}
+
+function deleteCurrentProfile() {
+  if (!currentNickname) {
+    alert("삭제할 닉네임이 없습니다.");
+    return;
+  }
+
+  if (!confirm(currentNickname + " 닉네임을 삭제할까요?")) return;
+
+  delete profiles[currentNickname];
+  currentNickname = Object.keys(profiles)[0] || "";
+  saveProfiles();
+  updateProfileUI();
+}
+
+function ensureProfile() {
+  if (!currentNickname) {
+    alert("먼저 닉네임을 입력하세요.");
+    return false;
+  }
+  return true;
+}
+
+function getGradeInfo(score) {
+  const thresholds = buildThresholds();
+  let gradeIndex = 0;
+
+  for (let i = 0; i < thresholds.length; i++) {
+    if (score >= thresholds[i]) gradeIndex = i;
+    else break;
+  }
+
+  const current = elements[gradeIndex];
+  const next = elements[gradeIndex + 1] || null;
+  const currentNeed = thresholds[gradeIndex];
+  const nextNeed = next ? thresholds[gradeIndex + 1] : thresholds[gradeIndex];
+  const progress = next ? Math.max(0, Math.min(100, ((score - currentNeed) / (nextNeed - currentNeed)) * 100)) : 100;
+
+  return {
+    index: gradeIndex,
+    current,
+    next,
+    currentNeed,
+    nextNeed,
+    progress
+  };
+}
+
+function buildThresholds() {
+  const arr = [0];
+  let total = 0;
+
+  for (let i = 1; i < elements.length; i++) {
+    const increase = Math.ceil(10 + Math.pow(i, 1.18) * 2.2);
+    total += increase;
+    arr.push(total);
+  }
+
+  arr[1] = 10;
+
+  for (let i = 2; i < arr.length; i++) {
+    if (arr[i] <= arr[i - 1]) arr[i] = arr[i - 1] + Math.ceil(10 + i * 2);
+  }
+
+  return arr;
+}
+
+function updateProfileUI() {
+  const select = document.getElementById("profileSelect");
+  const names = Object.keys(profiles);
+  select.innerHTML = `<option value="">닉네임 선택</option>` + names.map(n => {
+    return `<option value="${escapeHtml(n)}" ${n === currentNickname ? "selected" : ""}>${escapeHtml(n)}</option>`;
+  }).join("");
+
+  const score = currentNickname ? profiles[currentNickname].score : 0;
+  const info = getGradeInfo(score);
+
+  document.getElementById("currentNickText").textContent = currentNickname || "없음";
+  document.getElementById("totalScoreText").textContent = score + "점";
+  document.getElementById("gradeText").textContent = `${info.current.name} (${info.current.s})`;
+
+  if (info.next) {
+    document.getElementById("nextGradeText").textContent = `${info.next.name}까지 ${info.nextNeed - score}점`;
+  } else {
+    document.getElementById("nextGradeText").textContent = "최고 등급";
+  }
+
+  document.getElementById("gradeProgress").style.width = info.progress + "%";
+  document.getElementById("tableProfilePill").textContent = currentNickname ? `${currentNickname} · ${info.current.name} 등급` : "닉네임 없음";
+  document.getElementById("quizProfilePill").textContent = currentNickname ? `${currentNickname} · ${info.current.name} 등급` : "닉네임 없음";
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  updateProfileUI();
+}
+
+function goHome() {
+  if (quizRunning) return;
+  showScreen("homeScreen");
+}
+
+function openTableScreen() {
+  if (!ensureProfile()) return;
+  if (quizRunning) {
+    alert("퀴즈 진행 중에는 주기율표를 볼 수 없습니다.");
+    return;
+  }
+  showScreen("tableScreen");
+}
+
+function openQuizScreen() {
+  if (!ensureProfile()) return;
+  showScreen("quizScreen");
+  resetQuizScreen();
+}
+
+function tryLeaveQuiz() {
+  if (quizRunning) {
+    if (!confirm("퀴즈가 진행 중입니다. 나가면 현재 퀴즈는 사라집니다. 나갈까요?")) return;
+    quizRunning = false;
+  }
+  resetQuizScreen();
+  showScreen("homeScreen");
+}
+
+function resetQuizScreen() {
+  quizRunning = false;
+  document.getElementById("quizSetup").style.display = "block";
+  document.getElementById("quizPlay").classList.remove("active");
+  document.getElementById("resultPanel").classList.remove("active");
+  document.getElementById("quizBackBtn").textContent = "← 되돌아가기";
+}
+
+function selectQuizLength(count) {
+  selectedQuizLength = count;
+  document.querySelectorAll(".lengthBtn").forEach(btn => {
+    btn.classList.toggle("active", Number(btn.dataset.count) === count);
+  });
+}
+
+function startQuiz() {
+  quizFields = [...document.querySelectorAll(".quizField:checked")].map(x => x.value);
+
+  if (quizFields.length === 0) {
     alert("맞힐 항목을 하나 이상 선택하세요.");
     return;
   }
 
-  document.getElementById("quizCard").style.display = "block";
-  nextQuiz();
+  gradeBeforeQuiz = getGradeInfo(profiles[currentNickname].score).current.name;
+  quizTotal = selectedQuizLength;
+  quizIndex = 0;
+  quizCorrect = 0;
+  quizWrong = 0;
+  quizRunning = true;
+
+  document.getElementById("quizSetup").style.display = "none";
+  document.getElementById("quizPlay").classList.add("active");
+  document.getElementById("resultPanel").classList.remove("active");
+  document.getElementById("quizBackBtn").textContent = "← 퀴즈 나가기";
+
+  nextQuestion();
 }
 
-function nextQuiz() {
-  if (currentQuizFields.length === 0) {
-    currentQuizFields = [...document.querySelectorAll(".quizField:checked")].map(x => x.value);
-  }
+function nextQuestion() {
+  if (answered === false && quizIndex > 0) return;
 
-  currentQuizElement = elements[Math.floor(Math.random() * elements.length)];
-
-  const possibleHints = ["symbol", "name", "number"].filter(f => !currentQuizFields.includes(f));
-  const hintField = possibleHints.length ? possibleHints[0] : null;
-
-  const hint = document.getElementById("quizHint");
-  const display = document.getElementById("quizDisplay");
-
-  if (hintField) {
-    hint.textContent = `힌트: ${fieldNames[hintField]}`;
-    display.textContent = getValue(currentQuizElement, hintField);
-  } else {
-    hint.textContent = "힌트 없음: 선택한 항목이 많아서 전부 직접 맞혀야 합니다.";
-    display.textContent = "?";
-  }
-
-  const area = document.getElementById("answerArea");
-  area.innerHTML = "";
-
-  currentQuizFields.forEach(field => {
-    const input = document.createElement("input");
-    input.placeholder = fieldNames[field] + " 입력";
-    input.dataset.field = field;
-    area.appendChild(input);
-  });
-
-  document.getElementById("quizResult").innerHTML = "";
-}
-
-function checkQuiz() {
-  if (!currentQuizElement) {
-    alert("먼저 퀴즈 시작을 누르세요.");
+  if (quizIndex >= quizTotal) {
+    endQuiz();
     return;
   }
 
-  const inputs = [...document.querySelectorAll("#answerArea input")];
-  let html = "";
-  let allCorrect = true;
+  answered = false;
+  quizIndex++;
 
-  inputs.forEach(input => {
-    const field = input.dataset.field;
-    const user = normalizeAnswer(input.value);
-    const answer = normalizeAnswer(getValue(currentQuizElement, field));
+  const targetField = quizFields[Math.floor(Math.random() * quizFields.length)];
+  const element = elements[Math.floor(Math.random() * elements.length)];
 
-    if (user === answer) {
-      html += `<div class="ok">○ ${fieldNames[field]} 정답!</div>`;
-    } else {
-      allCorrect = false;
-      html += `<div class="no">× ${fieldNames[field]} 오답 | 정답: ${getValue(currentQuizElement, field)}</div>`;
-    }
+  currentQuestion = {
+    element,
+    targetField
+  };
+
+  document.getElementById("quizProgressText").textContent = `${quizIndex} / ${quizTotal}`;
+  document.getElementById("quizScoreText").textContent = `현재 점수 ${quizCorrect}점`;
+  document.getElementById("questionTitle").textContent = `${fieldNames[targetField]} 맞히기`;
+  document.getElementById("answerLabel").textContent = `${fieldNames[targetField]}을/를 입력하세요`;
+  document.getElementById("answerInput").value = "";
+  document.getElementById("answerInput").disabled = false;
+  document.getElementById("answerInput").focus();
+  document.getElementById("feedback").innerHTML = "";
+  document.getElementById("submitBtn").disabled = false;
+  document.getElementById("nextBtn").disabled = true;
+  document.getElementById("nextBtn").textContent = quizIndex === quizTotal ? "결과 보기" : "다음 문제";
+
+  const hintGrid = document.getElementById("hintGrid");
+  hintGrid.innerHTML = "";
+
+  fieldOrder.forEach(field => {
+    if (field === targetField) return;
+
+    const div = document.createElement("div");
+    div.className = "hintItem";
+    div.innerHTML = `
+      <div class="k">${fieldNames[field]}</div>
+      <div class="v">${escapeHtml(getValue(element, field))}</div>
+    `;
+    hintGrid.appendChild(div);
   });
-
-  if (allCorrect) {
-    html = `<div class="ok">전부 정답입니다!</div>` + html;
-  }
-
-  document.getElementById("quizResult").innerHTML = html;
 }
 
-function openPeriodicTable() {
-  const win = window.open("", "periodicTable", "width=1500,height=950,scrollbars=yes,resizable=yes");
+function submitAnswer() {
+  if (!currentQuestion || answered) return;
 
-  const html = `
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>주기율표</title>
-<style>
-  * {
-    box-sizing: border-box;
-    font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+  const userAnswer = normalize(document.getElementById("answerInput").value);
+  const correctAnswer = normalize(getValue(currentQuestion.element, currentQuestion.targetField));
+  const answerRaw = getValue(currentQuestion.element, currentQuestion.targetField);
+
+  answered = true;
+  document.getElementById("answerInput").disabled = true;
+  document.getElementById("submitBtn").disabled = true;
+  document.getElementById("nextBtn").disabled = false;
+
+  if (userAnswer === correctAnswer) {
+    quizCorrect++;
+    document.getElementById("feedback").innerHTML = `<span class="ok">정답! +1점</span>`;
+  } else {
+    quizWrong++;
+    document.getElementById("feedback").innerHTML = `<span class="no">오답! 정답은 ${escapeHtml(answerRaw)}입니다.</span>`;
   }
 
-  body {
-    margin: 0;
-    background: #0f172a;
-    color: white;
-    overflow: auto;
+  document.getElementById("quizScoreText").textContent = `현재 점수 ${quizCorrect}점`;
+
+  if (quizIndex === quizTotal) {
+    document.getElementById("nextBtn").textContent = "결과 보기";
   }
-
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(15, 23, 42, .96);
-    border-bottom: 1px solid rgba(255,255,255,.14);
-    padding: 14px 18px;
-  }
-
-  h1 {
-    margin: 0 0 12px;
-    font-size: 26px;
-  }
-
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-
-  button {
-    border: 0;
-    border-radius: 12px;
-    padding: 9px 12px;
-    font-weight: 800;
-    cursor: pointer;
-    color: white;
-    background: #334155;
-  }
-
-  button.active {
-    background: #2563eb;
-  }
-
-  .zoom {
-    margin-left: 12px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    color: #cbd5e1;
-  }
-
-  .legend {
-    margin-top: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    color: #cbd5e1;
-    font-size: 14px;
-  }
-
-  .dot {
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-    border-radius: 4px;
-    margin-right: 4px;
-    vertical-align: middle;
-  }
-
-  .tableWrap {
-    transform-origin: top left;
-    padding: 24px;
-    width: max-content;
-  }
-
-  .periodic {
-    display: grid;
-    grid-template-columns: repeat(18, 82px);
-    grid-template-rows: repeat(9, 92px);
-    gap: 7px;
-    position: relative;
-  }
-
-  .groupNum {
-    height: 22px;
-    text-align: center;
-    color: #94a3b8;
-    font-size: 13px;
-    font-weight: 800;
-  }
-
-  .element {
-    border-radius: 12px;
-    padding: 6px;
-    border: 1px solid rgba(255,255,255,.24);
-    box-shadow: inset 0 0 16px rgba(255,255,255,.08);
-    overflow: hidden;
-    position: relative;
-  }
-
-  .금속 { background: linear-gradient(135deg, #facc15, #a16207); color: #111827; }
-  .액체 { background: linear-gradient(135deg, #38bdf8, #1d4ed8); color: white; }
-  .기체 { background: linear-gradient(135deg, #fb7185, #b91c1c); color: white; }
-  .모름 { background: linear-gradient(135deg, #94a3b8, #475569); color: white; }
-
-  .number {
-    font-size: 12px;
-    font-weight: 800;
-    opacity: .9;
-  }
-
-  .symbol {
-    font-size: 24px;
-    font-weight: 950;
-    text-align: center;
-    line-height: 1.05;
-  }
-
-  .name {
-    font-size: 11px;
-    text-align: center;
-    font-weight: 800;
-    white-space: nowrap;
-  }
-
-  .atomicWeight,
-  .massNumber,
-  .state {
-    font-size: 10px;
-    text-align: center;
-    line-height: 1.25;
-    white-space: nowrap;
-  }
-
-  .labelBox {
-    background: rgba(255,255,255,.08);
-    border: 1px dashed rgba(255,255,255,.25);
-    color: #cbd5e1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 900;
-  }
-
-  .hiddenField {
-    visibility: hidden;
-  }
-
-  .periodLabel {
-    position: absolute;
-    left: -22px;
-    width: 18px;
-    height: 92px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    font-weight: 900;
-  }
-
-  .groupHeader {
-    display: grid;
-    grid-template-columns: repeat(18, 82px);
-    gap: 7px;
-    margin-left: 24px;
-    margin-bottom: 4px;
-  }
-
-  @media (max-width: 900px) {
-    .periodic {
-      grid-template-columns: repeat(18, 74px);
-      grid-template-rows: repeat(9, 86px);
-      gap: 6px;
-    }
-
-    .groupHeader {
-      grid-template-columns: repeat(18, 74px);
-      gap: 6px;
-    }
-
-    .symbol {
-      font-size: 21px;
-    }
-  }
-</style>
-</head>
-<body>
-<header>
-  <h1>주기율표 - 오가네손까지</h1>
-
-  <div class="controls">
-    <button class="toggle active" data-field="number">원소 번호</button>
-    <button class="toggle active" data-field="symbol">원소 기호</button>
-    <button class="toggle active" data-field="name">원소 이름</button>
-    <button class="toggle active" data-field="atomicWeight">원자량</button>
-    <button class="toggle active" data-field="massNumber">질량수</button>
-    <button class="toggle active" data-field="state">상태</button>
-
-    <div class="zoom">
-      확대/축소
-      <input id="zoomRange" type="range" min="50" max="180" value="100">
-      <span id="zoomText">100%</span>
-    </div>
-  </div>
-
-  <div class="legend">
-    <span><span class="dot" style="background:#facc15"></span>금속/고체</span>
-    <span><span class="dot" style="background:#38bdf8"></span>액체</span>
-    <span><span class="dot" style="background:#fb7185"></span>기체</span>
-    <span><span class="dot" style="background:#94a3b8"></span>모름</span>
-  </div>
-</header>
-
-<div class="tableWrap" id="tableWrap">
-  <div class="groupHeader">
-    ${Array.from({length:18},(_,i)=>`<div class="groupNum">${i+1}족</div>`).join("")}
-  </div>
-  <div class="periodic" id="periodic"></div>
-</div>
-
-<script>
-const elements = ${JSON.stringify(elements)};
-
-const periodic = document.getElementById("periodic");
-
-for (let i = 1; i <= 9; i++) {
-  const label = document.createElement("div");
-  label.className = "periodLabel";
-  label.style.top = ((i - 1) * 99) + "px";
-  label.textContent = i <= 7 ? i + "주기" : (i === 8 ? "란타넘족" : "악티늄족");
-  periodic.appendChild(label);
 }
 
-const laBox = document.createElement("div");
-laBox.className = "labelBox";
-laBox.style.gridColumn = "3";
-laBox.style.gridRow = "6";
-laBox.innerHTML = "57-71<br>란타넘족";
-periodic.appendChild(laBox);
+function endQuiz() {
+  quizRunning = false;
 
-const acBox = document.createElement("div");
-acBox.className = "labelBox";
-acBox.style.gridColumn = "3";
-acBox.style.gridRow = "7";
-acBox.innerHTML = "89-103<br>악티늄족";
-periodic.appendChild(acBox);
+  const oldScore = profiles[currentNickname].score;
+  profiles[currentNickname].score += quizCorrect;
+  saveProfiles();
 
-elements.forEach(el => {
-  const div = document.createElement("div");
-  div.className = "element " + el.state;
-  div.style.gridColumn = el.g;
-  div.style.gridRow = el.p;
+  const newScore = profiles[currentNickname].score;
+  const beforeGrade = gradeBeforeQuiz;
+  const afterGrade = getGradeInfo(newScore).current.name;
 
-  div.innerHTML = \`
-    <div class="number field-number">\${el.n}</div>
-    <div class="symbol field-symbol">\${el.s}</div>
-    <div class="name field-name">\${el.name}</div>
-    <div class="atomicWeight field-atomicWeight">원자량 \${el.aw}</div>
-    <div class="massNumber field-massNumber">질량수 \${el.m}</div>
-    <div class="state field-state">\${el.state}</div>
-  \`;
+  document.getElementById("quizPlay").classList.remove("active");
+  document.getElementById("resultPanel").classList.add("active");
 
-  periodic.appendChild(div);
-});
+  document.getElementById("finalScoreText").textContent = `+${quizCorrect}점`;
+  document.getElementById("finalWrongText").textContent = `${quizTotal}문제 중 ${quizWrong}개 틀렸습니다. 총점: ${newScore}점`;
 
-document.querySelectorAll(".toggle").forEach(btn => {
-  btn.addEventListener("click", () => {
-    btn.classList.toggle("active");
-    const field = btn.dataset.field;
-    document.querySelectorAll(".field-" + field).forEach(x => {
-      x.classList.toggle("hiddenField");
-    });
+  if (beforeGrade !== afterGrade) {
+    document.getElementById("gradeUpText").innerHTML = `<span class="ok">등급 상승! ${beforeGrade} → ${afterGrade}</span>`;
+  } else {
+    document.getElementById("gradeUpText").textContent = `현재 등급: ${afterGrade}`;
+  }
+
+  updateProfileUI();
+}
+
+function finishQuiz() {
+  resetQuizScreen();
+  showScreen("homeScreen");
+}
+
+function buildPeriodicTable() {
+  const groupHeader = document.getElementById("groupHeader");
+  groupHeader.innerHTML = "";
+  for (let i = 1; i <= 18; i++) {
+    const div = document.createElement("div");
+    div.className = "groupNum";
+    div.textContent = i + "족";
+    groupHeader.appendChild(div);
+  }
+
+  const periodic = document.getElementById("periodic");
+  periodic.innerHTML = "";
+
+  for (let i = 1; i <= 9; i++) {
+    const label = document.createElement("div");
+    label.className = "periodLabel";
+    label.style.top = ((i - 1) * 99) + "px";
+    label.textContent = i <= 7 ? `${i}주기` : (i === 8 ? "란타넘족" : "악티늄족");
+    periodic.appendChild(label);
+  }
+
+  const laBox = document.createElement("div");
+  laBox.className = "seriesBox";
+  laBox.style.gridColumn = "3";
+  laBox.style.gridRow = "6";
+  laBox.innerHTML = "57-71<br>란타넘족";
+  periodic.appendChild(laBox);
+
+  const acBox = document.createElement("div");
+  acBox.className = "seriesBox";
+  acBox.style.gridColumn = "3";
+  acBox.style.gridRow = "7";
+  acBox.innerHTML = "89-103<br>악티늄족";
+  periodic.appendChild(acBox);
+
+  elements.forEach(el => {
+    const div = document.createElement("div");
+    div.className = "element " + el.state;
+    div.style.gridColumn = el.g;
+    div.style.gridRow = el.p;
+
+    div.innerHTML = `
+      <div class="elNumber field-number">${el.n}</div>
+      <div class="elSymbol field-symbol">${el.s}</div>
+      <div class="elName field-name">${el.name}</div>
+      <div class="elSmall field-atomicWeight">원자량 ${el.aw}</div>
+      <div class="elSmall field-massNumber">질량수 ${el.m}</div>
+      <div class="elSmall field-state">${el.state}</div>
+    `;
+
+    periodic.appendChild(div);
   });
-});
 
-document.getElementById("zoomRange").addEventListener("input", e => {
-  const value = e.target.value;
-  document.getElementById("tableWrap").style.transform = "scale(" + value / 100 + ")";
+  document.querySelectorAll(".toggleBtn").forEach(btn => {
+    btn.onclick = () => {
+      btn.classList.toggle("active");
+      const field = btn.dataset.field;
+      document.querySelectorAll(".field-" + field).forEach(x => {
+        x.classList.toggle("hiddenField");
+      });
+    };
+  });
+}
+
+function setZoom(value) {
+  document.getElementById("tableScale").style.transform = `scale(${value / 100})`;
   document.getElementById("zoomText").textContent = value + "%";
-});
-<\/script>
-</body>
-</html>
-  `;
-
-  win.document.open();
-  win.document.write(html);
-  win.document.close();
 }
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+buildPeriodicTable();
+loadProfiles();
 </script>
 </body>
 </html>
