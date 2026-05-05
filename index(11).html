@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>원소 외우기</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1f2937, #020617 70%);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main {
+      width: min(920px, 92vw);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 28px;
+      padding: 38px 28px;
+      text-align: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,.35);
+      backdrop-filter: blur(16px);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(32px, 5vw, 56px);
+    }
+
+    .sub {
+      color: #cbd5e1;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 18px;
+      padding: 16px 24px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: white;
+      box-shadow: 0 12px 30px rgba(56,189,248,.25);
+      transition: .18s;
+      margin: 6px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .quizBox {
+      margin-top: 28px;
+      background: rgba(15, 23, 42, .7);
+      border-radius: 24px;
+      padding: 24px;
+      text-align: left;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .quizBox h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 16px 0 20px;
+    }
+
+    label {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 6px;
+    }
+
+    .quizCard {
+      display: none;
+      margin-top: 20px;
+      background: rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .hint {
+      text-align: center;
+      margin-bottom: 18px;
+      font-size: 18px;
+      color: #e0f2fe;
+    }
+
+    .bigSymbol {
+      text-align: center;
+      font-size: 58px;
+      font-weight: 900;
+      margin: 10px 0;
+    }
+
+    .answerArea {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answerArea input {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(2,6,23,.7);
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .result {
+      margin-top: 14px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .ok { color: #86efac; }
+    .no { color: #fca5a5; }
+
+    .small {
+      color: #94a3b8;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <h1>원소 외우기</h1>
+    <p class="sub">
+      주기율표를 보면서 원소 이름, 기호, 번호, 원자량, 질량수, 상태를 켜고 끄며 외우고,<br>
+      원하는 항목만 골라 퀴즈로 연습할 수 있습니다.
+    </p>
+
+    <button class="btn" onclick="openPeriodicTable()">주기율표 보기</button>
+
+    <div class="quizBox">
+      <h2>퀴즈 풀기</h2>
+      <div class="small">맞힐 항목을 선택한 뒤 퀴즈 시작을 누르세요.</div>
+
+      <div class="checks">
+        <label><input type="checkbox" class="quizField" value="name" checked> 원소 이름</label>
+        <label><input type="checkbox" class="quizField" value="symbol"> 원소 기호</label>
+        <label><input type="checkbox" class="quizField" value="number"> 원소 번호</label>
+        <label><input type="checkbox" class="quizField" value="atomicWeight"> 원자량</label>
+        <label><input type="checkbox" class="quizField" value="massNumber"> 질량수</label>
+        <label><input type="checkbox" class="quizField" value="state"> 상태</label>
+      </div>
+
+      <div style="text-align:center;">
+        <button class="btn" onclick="startQuiz()">퀴즈 시작</button>
+        <button class="btn" onclick="checkQuiz()">정답 확인</button>
+        <button class="btn" onclick="nextQuiz()">다음 문제</button>
+      </div>
+
+      <div class="quizCard" id="quizCard">
+        <div class="hint" id="quizHint"></div>
+        <div class="bigSymbol" id="quizDisplay">?</div>
+        <div class="answerArea" id="answerArea"></div>
+        <div class="result" id="quizResult"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const elements = [
+  {n:1,s:"H",name:"수소",aw:"1.008",m:"1",state:"기체",p:1,g:1},
+  {n:2,s:"He",name:"헬륨",aw:"4.0026",m:"4",state:"기체",p:1,g:18},
+
+  {n:3,s:"Li",name:"리튬",aw:"6.94",m:"7",state:"금속",p:2,g:1},
+  {n:4,s:"Be",name:"베릴륨",aw:"9.0122",m:"9",state:"금속",p:2,g:2},
+  {n:5,s:"B",name:"붕소",aw:"10.81",m:"11",state:"금속",p:2,g:13},
+  {n:6,s:"C",name:"탄소",aw:"12.011",m:"12",state:"금속",p:2,g:14},
+  {n:7,s:"N",name:"질소",aw:"14.007",m:"14",state:"기체",p:2,g:15},
+  {n:8,s:"O",name:"산소",aw:"15.999",m:"16",state:"기체",p:2,g:16},
+  {n:9,s:"F",name:"플루오린",aw:"18.998",m:"19",state:"기체",p:2,g:17},
+  {n:10,s:"Ne",name:"네온",aw:"20.180",m:"20",state:"기체",p:2,g:18},
+
+  {n:11,s:"Na",name:"나트륨",aw:"22.990",m:"23",state:"금속",p:3,g:1},
+  {n:12,s:"Mg",name:"마그네슘",aw:"24.305",m:"24",state:"금속",p:3,g:2},
+  {n:13,s:"Al",name:"알루미늄",aw:"26.982",m:"27",state:"금속",p:3,g:13},
+  {n:14,s:"Si",name:"규소",aw:"28.085",m:"28",state:"금속",p:3,g:14},
+  {n:15,s:"P",name:"인",aw:"30.974",m:"31",state:"금속",p:3,g:15},
+  {n:16,s:"S",name:"황",aw:"32.06",m:"32",state:"금속",p:3,g:16},
+  {n:17,s:"Cl",name:"염소",aw:"35.45",m:"35",state:"기체",p:3,g:17},
+  {n:18,s:"Ar",name:"아르곤",aw:"39.948",m:"40",state:"기체",p:3,g:18},
+
+  {n:19,s:"K",name:"칼륨",aw:"39.098",m:"39",state:"금속",p:4,g:1},
+  {n:20,s:"Ca",name:"칼슘",aw:"40.078",m:"40",state:"금속",p:4,g:2},
+  {n:21,s:"Sc",name:"스칸듐",aw:"44.956",m:"45",state:"금속",p:4,g:3},
+  {n:22,s:"Ti",name:"타이타늄",aw:"47.867",m:"48",state:"금속",p:4,g:4},
+  {n:23,s:"V",name:"바나듐",aw:"50.942",m:"51",state:"금속",p:4,g:5},
+  {n:24,s:"Cr",name:"크로뮴",aw:"51.996",m:"52",state:"금속",p:4,g:6},
+  {n:25,s:"Mn",name:"망가니즈",aw:"54.938",m:"55",state:"금속",p:4,g:7},
+  {n:26,s:"Fe",name:"철",aw:"55.845",m:"56",state:"금속",p:4,g:8},
+  {n:27,s:"Co",name:"코발트",aw:"58.933",m:"59",state:"금속",p:4,g:9},
+  {n:28,s:"Ni",name:"니켈",aw:"58.693",m:"59",state:"금속",p:4,g:10},
+  {n:29,s:"Cu",name:"구리",aw:"63.546",m:"64",state:"금속",p:4,g:11},
+  {n:30,s:"Zn",name:"아연",aw:"65.38",m:"65",state:"금속",p:4,g:12},
+  {n:31,s:"Ga",name:"갈륨",aw:"69.723",m:"70",state:"금속",p:4,g:13},
+  {n:32,s:"Ge",name:"저마늄",aw:"72.630",m:"73",state:"금속",p:4,g:14},
+  {n:33,s:"As",name:"비소",aw:"74.922",m:"75",state:"금속",p:4,g:15},
+  {n:34,s:"Se",name:"셀레늄",aw:"78.971",m:"79",state:"금속",p:4,g:16},
+  {n:35,s:"Br",name:"브로민",aw:"79.904",m:"80",state:"액체",p:4,g:17},
+  {n:36,s:"Kr",name:"크립톤",aw:"83.798",m:"84",state:"기체",p:4,g:18},
+
+  {n:37,s:"Rb",name:"루비듐",aw:"85.468",m:"85",state:"금속",p:5,g:1},
+  {n:38,s:"Sr",name:"스트론튬",aw:"87.62",m:"88",state:"금속",p:5,g:2},
+  {n:39,s:"Y",name:"이트륨",aw:"88.906",m:"89",state:"금속",p:5,g:3},
+  {n:40,s:"Zr",name:"지르코늄",aw:"91.224",m:"91",state:"금속",p:5,g:4},
+  {n:41,s:"Nb",name:"나이오븀",aw:"92.906",m:"93",state:"금속",p:5,g:5},
+  {n:42,s:"Mo",name:"몰리브데넘",aw:"95.95",m:"96",state:"금속",p:5,g:6},
+  {n:43,s:"Tc",name:"테크네튬",aw:"98",m:"98",state:"금속",p:5,g:7},
+  {n:44,s:"Ru",name:"루테늄",aw:"101.07",m:"101",state:"금속",p:5,g:8},
+  {n:45,s:"Rh",name:"로듐",aw:"102.91",m:"103",state:"금속",p:5,g:9},
+  {n:46,s:"Pd",name:"팔라듐",aw:"106.42",m:"106",state:"금속",p:5,g:10},
+  {n:47,s:"Ag",name:"은",aw:"107.87",m:"108",state:"금속",p:5,g:11},
+  {n:48,s:"Cd",name:"카드뮴",aw:"112.41",m:"112",state:"금속",p:5,g:12},
+  {n:49,s:"In",name:"인듐",aw:"114.82",m:"115",state:"금속",p:5,g:13},
+  {n:50,s:"Sn",name:"주석",aw:"118.71",m:"119",state:"금속",p:5,g:14},
+  {n:51,s:"Sb",name:"안티모니",aw:"121.76",m:"122",state:"금속",p:5,g:15},
+  {n:52,s:"Te",name:"텔루륨",aw:"127.60",m:"128",state:"금속",p:5,g:16},
+  {n:53,s:"I",name:"아이오딘",aw:"126.90",m:"127",state:"금속",p:5,g:17},
+  {n:54,s:"Xe",name:"제논",aw:"131.29",m:"131",state:"기체",p:5,g:18},
+
+  {n:55,s:"Cs",name:"세슘",aw:"132.91",m:"133",state:"금속",p:6,g:1},
+  {n:56,s:"Ba",name:"바륨",aw:"137.33",m:"137",state:"금속",p:6,g:2},
+  {n:57,s:"La",name:"란타넘",aw:"138.91",m:"139",state:"금속",p:8,g:4,series:"란타넘족"},
+  {n:58,s:"Ce",name:"세륨",aw:"140.12",m:"140",state:"금속",p:8,g:5,series:"란타넘족"},
+  {n:59,s:"Pr",name:"프라세오디뮴",aw:"140.91",m:"141",state:"금속",p:8,g:6,series:"란타넘족"},
+  {n:60,s:"Nd",name:"네오디뮴",aw:"144.24",m:"144",state:"금속",p:8,g:7,series:"란타넘족"},
+  {n:61,s:"Pm",name:"프로메튬",aw:"145",m:"145",state:"금속",p:8,g:8,series:"란타넘족"},
+  {n:62,s:"Sm",name:"사마륨",aw:"150.36",m:"150",state:"금속",p:8,g:9,series:"란타넘족"},
+  {n:63,s:"Eu",name:"유로퓸",aw:"151.96",m:"152",state:"금속",p:8,g:10,series:"란타넘족"},
+  {n:64,s:"Gd",name:"가돌리늄",aw:"157.25",m:"157",state:"금속",p:8,g:11,series:"란타넘족"},
+  {n:65,s:"Tb",name:"터븀",aw:"158.93",m:"159",state:"금속",p:8,g:12,series:"란타넘족"},
+  {n:66,s:"Dy",name:"디스프로슘",aw:"162.50",m:"163",state:"금속",p:8,g:13,series:"란타넘족"},
+  {n:67,s:"Ho",name:"홀뮴",aw:"164.93",m:"165",state:"금속",p:8,g:14,series:"란타넘족"},
+  {n:68,s:"Er",name:"어븀",aw:"167.26",m:"167",state:"금속",p:8,g:15,series:"란타넘족"},
+  {n:69,s:"Tm",name:"툴륨",aw:"168.93",m:"169",state:"금속",p:8,g:16,series:"란타넘족"},
+  {n:70,s:"Yb",name:"이터븀",aw:"173.05",m:"173",state:"금속",p:8,g:17,series:"란타넘족"},
+  {n:71,s:"Lu",name:"루테튬",aw:"174.97",m:"175",state:"금속",p:8,g:18,series:"란타넘족"},
+  {n:72,s:"Hf",name:"하프늄",aw:"178.49",m:"178",state:"금속",p:6,g:4},
+  {n:73,s:"Ta",name:"탄탈럼",aw:"180.95",m:"181",state:"금속",p:6,g:5},
+  {n:74,s:"W",name:"텅스텐",aw:"183.84",m:"184",state:"금속",p:6,g:6},
+  {n:75,s:"Re",name:"레늄",aw:"186.21",m:"186",state:"금속",p:6,g:7},
+  {n:76,s:"Os",name:"오스뮴",aw:"190.23",m:"190",state:"금속",p:6,g:8},
+  {n:77,s:"Ir",name:"이리듐",aw:"192.22",m:"192",state:"금속",p:6,g:9},
+  {n:78,s:"Pt",name:"백금",aw:"195.08",m:"195",state:"금속",p:6,g:10},
+  {n:79,s:"Au",name:"금",aw:"196.97",m:"197",state:"금속",p:6,g:11},
+  {n:80,s:"Hg",name:"수은",aw:"200.59",m:"201",state:"액체",p:6,g:12},
+  {n:81,s:"Tl",name:"탈륨",aw:"204.38",m:"204",state:"금속",p:6,g:13},
+  {n:82,s:"Pb",name:"납",aw:"207.2",m:"207",state:"금속",p:6,g:14},
+  {n:83,s:"Bi",name:"비스무트",aw:"208.98",m:"209",state:"금속",p:6,g:15},
+  {n:84,s:"Po",name:"폴로늄",aw:"209",m:"209",state:"금속",p:6,g:16},
+  {n:85,s:"At",name:"아스타틴",aw:"210",m:"210",state:"금속",p:6,g:17},
+  {n:86,s:"Rn",name:"라돈",aw:"222",m:"222",state:"기체",p:6,g:18},
+
+  {n:87,s:"Fr",name:"프랑슘",aw:"223",m:"223",state:"금속",p:7,g:1},
+  {n:88,s:"Ra",name:"라듐",aw:"226",m:"226",state:"금속",p:7,g:2},
+  {n:89,s:"Ac",name:"악티늄",aw:"227",m:"227",state:"금속",p:9,g:4,series:"악티늄족"},
+  {n:90,s:"Th",name:"토륨",aw:"232.04",m:"232",state:"금속",p:9,g:5,series:"악티늄족"},
+  {n:91,s:"Pa",name:"프로트악티늄",aw:"231.04",m:"231",state:"금속",p:9,g:6,series:"악티늄족"},
+  {n:92,s:"U",name:"우라늄",aw:"238.03",m:"238",state:"금속",p:9,g:7,series:"악티늄족"},
+  {n:93,s:"Np",name:"넵투늄",aw:"237",m:"237",state:"금속",p:9,g:8,series:"악티늄족"},
+  {n:94,s:"Pu",name:"플루토늄",aw:"244",m:"244",state:"금속",p:9,g:9,series:"악티늄족"},
+  {n:95,s:"Am",name:"아메리슘",aw:"243",m:"243",state:"금속",p:9,g:10,series:"악티늄족"},
+  {n:96,s:"Cm",name:"퀴륨",aw:"247",m:"247",state:"금속",p:9,g:11,series:"악티늄족"},
+  {n:97,s:"Bk",name:"버클륨",aw:"247",m:"247",state:"금속",p:9,g:12,series:"악티늄족"},
+  {n:98,s:"Cf",name:"캘리포늄",aw:"251",m:"251",state:"금속",p:9,g:13,series:"악티늄족"},
+  {n:99,s:"Es",name:"아인슈타이늄",aw:"252",m:"252",state:"금속",p:9,g:14,series:"악티늄족"},
+  {n:100,s:"Fm",name:"페르뮴",aw:"257",m:"257",state:"금속",p:9,g:15,series:"악티늄족"},
+  {n:101,s:"Md",name:"멘델레븀",aw:"258",m:"258",state:"금속",p:9,g:16,series:"악티늄족"},
+  {n:102,s:"No",name:"노벨륨",aw:"259",m:"259",state:"금속",p:9,g:17,series:"악티늄족"},
+  {n:103,s:"Lr",name:"로렌슘",aw:"266",m:"266",state:"금속",p:9,g:18,series:"악티늄족"},
+
+  {n:104,s:"Rf",name:"러더포듐",aw:"267",m:"267",state:"모름",p:7,g:4},
+  {n:105,s:"Db",name:"더브늄",aw:"268",m:"268",state:"모름",p:7,g:5},
+  {n:106,s:"Sg",name:"시보귬",aw:"269",m:"269",state:"모름",p:7,g:6},
+  {n:107,s:"Bh",name:"보륨",aw:"270",m:"270",state:"모름",p:7,g:7},
+  {n:108,s:"Hs",name:"하슘",aw:"277",m:"277",state:"모름",p:7,g:8},
+  {n:109,s:"Mt",name:"마이트너륨",aw:"278",m:"278",state:"모름",p:7,g:9},
+  {n:110,s:"Ds",name:"다름슈타튬",aw:"281",m:"281",state:"모름",p:7,g:10},
+  {n:111,s:"Rg",name:"뢴트게늄",aw:"282",m:"282",state:"모름",p:7,g:11},
+  {n:112,s:"Cn",name:"코페르니슘",aw:"285",m:"285",state:"모름",p:7,g:12},
+  {n:113,s:"Nh",name:"니호늄",aw:"286",m:"286",state:"모름",p:7,g:13},
+  {n:114,s:"Fl",name:"플레로븀",aw:"289",m:"289",state:"모름",p:7,g:14},
+  {n:115,s:"Mc",name:"모스코븀",aw:"290",m:"290",state:"모름",p:7,g:15},
+  {n:116,s:"Lv",name:"리버모륨",aw:"293",m:"293",state:"모름",p:7,g:16},
+  {n:117,s:"Ts",name:"테네신",aw:"294",m:"294",state:"모름",p:7,g:17},
+  {n:118,s:"Og",name:"오가네손",aw:"294",m:"294",state:"모름",p:7,g:18}
+];
+
+const fieldNames = {
+  name: "원소 이름",
+  symbol: "원소 기호",
+  number: "원소 번호",
+  atomicWeight: "원자량",
+  massNumber: "질량수",
+  state: "상태"
+};
+
+let currentQuizElement = null;
+let currentQuizFields = [];
+
+function getValue(el, field) {
+  if (field === "name") return el.name;
+  if (field === "symbol") return el.s;
+  if (field === "number") return String(el.n);
+  if (field === "atomicWeight") return el.aw;
+  if (field === "massNumber") return el.m;
+  if (field === "state") return el.state;
+  return "";
+}
+
+function normalizeAnswer(v) {
+  return String(v).trim().toLowerCase().replace(/\s/g, "");
+}
+
+function startQuiz() {
+  currentQuizFields = [...document.querySelectorAll(".quizField:checked")].map(x => x.value);
+
+  if (currentQuizFields.length === 0) {
+    alert("맞힐 항목을 하나 이상 선택하세요.");
+    return;
+  }
+
+  document.getElementById("quizCard").style.display = "block";
+  nextQuiz();
+}
+
+function nextQuiz() {
+  if (currentQuizFields.length === 0) {
+    currentQuizFields = [...document.querySelectorAll(".quizField:checked")].map(x => x.value);
+  }
+
+  currentQuizElement = elements[Math.floor(Math.random() * elements.length)];
+
+  const possibleHints = ["symbol", "name", "number"].filter(f => !currentQuizFields.includes(f));
+  const hintField = possibleHints.length ? possibleHints[0] : null;
+
+  const hint = document.getElementById("quizHint");
+  const display = document.getElementById("quizDisplay");
+
+  if (hintField) {
+    hint.textContent = `힌트: ${fieldNames[hintField]}`;
+    display.textContent = getValue(currentQuizElement, hintField);
+  } else {
+    hint.textContent = "힌트 없음: 선택한 항목이 많아서 전부 직접 맞혀야 합니다.";
+    display.textContent = "?";
+  }
+
+  const area = document.getElementById("answerArea");
+  area.innerHTML = "";
+
+  currentQuizFields.forEach(field => {
+    const input = document.createElement("input");
+    input.placeholder = fieldNames[field] + " 입력";
+    input.dataset.field = field;
+    area.appendChild(input);
+  });
+
+  document.getElementById("quizResult").innerHTML = "";
+}
+
+function checkQuiz() {
+  if (!currentQuizElement) {
+    alert("먼저 퀴즈 시작을 누르세요.");
+    return;
+  }
+
+  const inputs = [...document.querySelectorAll("#answerArea input")];
+  let html = "";
+  let allCorrect = true;
+
+  inputs.forEach(input => {
+    const field = input.dataset.field;
+    const user = normalizeAnswer(input.value);
+    const answer = normalizeAnswer(getValue(currentQuizElement, field));
+
+    if (user === answer) {
+      html += `<div class="ok">○ ${fieldNames[field]} 정답!</div>`;
+    } else {
+      allCorrect = false;
+      html += `<div class="no">× ${fieldNames[field]} 오답 | 정답: ${getValue(currentQuizElement, field)}</div>`;
+    }
+  });
+
+  if (allCorrect) {
+    html = `<div class="ok">전부 정답입니다!</div>` + html;
+  }
+
+  document.getElementById("quizResult").innerHTML = html;
+}
+
+function openPeriodicTable() {
+  const win = window.open("", "periodicTable", "width=1500,height=950,scrollbars=yes,resizable=yes");
+
+  const html = `
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>주기율표</title>
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background: #0f172a;
+    color: white;
+    overflow: auto;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(15, 23, 42, .96);
+    border-bottom: 1px solid rgba(255,255,255,.14);
+    padding: 14px 18px;
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: 26px;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  button {
+    border: 0;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-weight: 800;
+    cursor: pointer;
+    color: white;
+    background: #334155;
+  }
+
+  button.active {
+    background: #2563eb;
+  }
+
+  .zoom {
+    margin-left: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: #cbd5e1;
+  }
+
+  .legend {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #cbd5e1;
+    font-size: 14px;
+  }
+
+  .dot {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .tableWrap {
+    transform-origin: top left;
+    padding: 24px;
+    width: max-content;
+  }
+
+  .periodic {
+    display: grid;
+    grid-template-columns: repeat(18, 82px);
+    grid-template-rows: repeat(9, 92px);
+    gap: 7px;
+    position: relative;
+  }
+
+  .groupNum {
+    height: 22px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .element {
+    border-radius: 12px;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,.24);
+    box-shadow: inset 0 0 16px rgba(255,255,255,.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .금속 { background: linear-gradient(135deg, #facc15, #a16207); color: #111827; }
+  .액체 { background: linear-gradient(135deg, #38bdf8, #1d4ed8); color: white; }
+  .기체 { background: linear-gradient(135deg, #fb7185, #b91c1c); color: white; }
+  .모름 { background: linear-gradient(135deg, #94a3b8, #475569); color: white; }
+
+  .number {
+    font-size: 12px;
+    font-weight: 800;
+    opacity: .9;
+  }
+
+  .symbol {
+    font-size: 24px;
+    font-weight: 950;
+    text-align: center;
+    line-height: 1.05;
+  }
+
+  .name {
+    font-size: 11px;
+    text-align: center;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .atomicWeight,
+  .massNumber,
+  .state {
+    font-size: 10px;
+    text-align: center;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  .labelBox {
+    background: rgba(255,255,255,.08);
+    border: 1px dashed rgba(255,255,255,.25);
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .hiddenField {
+    visibility: hidden;
+  }
+
+  .periodLabel {
+    position: absolute;
+    left: -22px;
+    width: 18px;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-weight: 900;
+  }
+
+  .groupHeader {
+    display: grid;
+    grid-template-columns: repeat(18, 82px);
+    gap: 7px;
+    margin-left: 24px;
+    margin-bottom: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .periodic {
+      grid-template-columns: repeat(18, 74px);
+      grid-template-rows: repeat(9, 86px);
+      gap: 6px;
+    }
+
+    .groupHeader {
+      grid-template-columns: repeat(18, 74px);
+      gap: 6px;
+    }
+
+    .symbol {
+      font-size: 21px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>주기율표 - 오가네손까지</h1>
+
+  <div class="controls">
+    <button class="toggle active" data-field="number">원소 번호</button>
+    <button class="toggle active" data-field="symbol">원소 기호</button>
+    <button class="toggle active" data-field="name">원소 이름</button>
+    <button class="toggle active" data-field="atomicWeight">원자량</button>
+    <button class="toggle active" data-field="massNumber">질량수</button>
+    <button class="toggle active" data-field="state">상태</button>
+
+    <div class="zoom">
+      확대/축소
+      <input id="zoomRange" type="range" min="50" max="180" value="100">
+      <span id="zoomText">100%</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:#facc15"></span>금속/고체</span>
+    <span><span class="dot" style="background:#38bdf8"></span>액체</span>
+    <span><span class="dot" style="background:#fb7185"></span>기체</span>
+    <span><span class="dot" style="background:#94a3b8"></span>모름</span>
+  </div>
+</header>
+
+<div class="tableWrap" id="tableWrap">
+  <div class="groupHeader">
+    ${Array.from({length:18},(_,i)=>`<div class="groupNum">${i+1}족</div>`).join("")}
+  </div>
+  <div class="periodic" id="periodic"></div>
+</div>
+
+<script>
+const elements = ${JSON.stringify(elements)};
+
+const periodic = document.getElementById("periodic");
+
+for (let i = 1; i <= 9; i++) {
+  const label = document.createElement("div");
+  label.className = "periodLabel";
+  label.style.top = ((i - 1) * 99) + "px";
+  label.textContent = i <= 7 ? i + "주기" : (i === 8 ? "란타넘족" : "악티늄족");
+  periodic.appendChild(label);
+}
+
+const laBox = document.createElement("div");
+laBox.className = "labelBox";
+laBox.style.gridColumn = "3";
+laBox.style.gridRow = "6";
+laBox.innerHTML = "57-71<br>란타넘족";
+periodic.appendChild(laBox);
+
+const acBox = document.createElement("div");
+acBox.className = "labelBox";
+acBox.style.gridColumn = "3";
+acBox.style.gridRow = "7";
+acBox.innerHTML = "89-103<br>악티늄족";
+periodic.appendChild(acBox);
+
+elements.forEach(el => {
+  const div = document.createElement("div");
+  div.className = "element " + el.state;
+  div.style.gridColumn = el.g;
+  div.style.gridRow = el.p;
+
+  div.innerHTML = \`
+    <div class="number field-number">\${el.n}</div>
+    <div class="symbol field-symbol">\${el.s}</div>
+    <div class="name field-name">\${el.name}</div>
+    <div class="atomicWeight field-atomicWeight">원자량 \${el.aw}</div>
+    <div class="massNumber field-massNumber">질량수 \${el.m}</div>
+    <div class="state field-state">\${el.state}</div>
+  \`;
+
+  periodic.appendChild(div);
+});
+
+document.querySelectorAll(".toggle").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("active");
+    const field = btn.dataset.field;
+    document.querySelectorAll(".field-" + field).forEach(x => {
+      x.classList.toggle("hiddenField");
+    });
+  });
+});
+
+document.getElementById("zoomRange").addEventListener("input", e => {
+  const value = e.target.value;
+  document.getElementById("tableWrap").style.transform = "scale(" + value / 100 + ")";
+  document.getElementById("zoomText").textContent = value + "%";
+});
+<\/script>
+</body>
+</html>
+  `;
+
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+}
+</script>
+</body>
+</html>
